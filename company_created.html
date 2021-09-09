@@ -5,6 +5,7 @@
 <script type='module'>
 
 import { CSV } from "https://js.sabae.cc/CSV.js";
+import { encodeHTML } from "https://js.sabae.cc/encodeHTML.js";
 import tabularmaps from 'https://www.stopcovid19.jp/tabularmapsjapan.mjs';
 
 window.onload = async () => {
@@ -79,6 +80,7 @@ window.onload = async () => {
 			div2.textContent = (isNaN(kpi) ? "-" : kpi) + unit;
 			c.appendChild(div2);
 			c.onclick = () => {
+				detail.innerHTML = (prefs[cname] || []).map(d => encodeHTML(d.name)).map(name => `<a href="https://www.google.com/search?q=${name}">${name}</a>`).join(", ");
 				//const url = "https://www.stopcovid19.jp/beds_graph.html#" + cname;
 				//window.open(url, "_blank");
 			};
@@ -119,7 +121,7 @@ h1 {
 	margin: 0 auto;
 }
 #tmapc span {
-	font-size: min(2.0vmax, 20px);
+	font-size: min(1.5vmax, 15px);
 	align-items: center;
 	justify-content: center;
 	border-radius: .5vmax;
@@ -128,13 +130,16 @@ h1 {
 	margin: .2vmax;
 }
 /* other */
-#sel {
-	font-size: 130%;
-	margin: .3em;
-}
-#banner {
-	width: 80vw;
-	margin: 1vw;
+#detail {
+	text-align: left;
+	padding: .3em;
+	font-size: 90%;
+	overflow: scroll;
+	display: inline-block;
+	border: 1px solid gray;
+	width: 90vw;
+	max-width: 700px;
+	height: 10em;
 }
 /* credit */
 .credit {
@@ -153,6 +158,7 @@ a {
 
 <div id="tmapc"></div>
 <div id=lastUpdate></div>
+<div id="detail"></div>
 
 <div class="credit">
 APP: CC BY <a href=https://fukuno.jig.jp/3332>@taisukef 福野泰介</a><br>
