@@ -1,45 +1,28 @@
-const sparql = async (query) => {
-  const baseurl = "https://api.info.gbiz.go.jp/sparql";
-  const url = `${baseurl}?query=${encodeURIComponent(query)}`;
-  const json = await (await fetch(url)).json();
-  return json;
-};
 
-const sparqlTypes = async () => {
-  const query = "select distinct ?o { ?s a ?o. } order by ?o";
-  return await sparql(query);
-};
-const sparqlItems10 = async (uri) => {
-  //const query = `select ?s { ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <${uri}>. } order by rand() limit 10`;
-  //const query = `select ?s { ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <${uri}>. } limit 10`;
-  const query = `select ?p ?o { ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <${uri}>. ?s ?p ?o } limit 10`;
-  return await sparql(query);
-};
-const sparqlItem = async (uri) => {
-  const query = `select * { <${uri}> ?p ?o. }`;
-  return await sparql(query);
-};
-const sparqlProperties = async () => {
-  const query = `select distinct ?p { ?s ?p ?o. } order by ?p`;
-  return await sparql(query);
-};
+import { GBizINFO } from "./GBizINFO.js";
 
-const values = (json) => {
-  const name = json.head.vars[0];
-  return json.results.bindings.map(d => d[name].value);
-};
+const gbiz = new GBizINFO();
 
-//const data = values(await sparqlTypes());
+//const data = await gbiz.getTypes();
 //const data = values(await sparqlProperties());
 //const data = await sparqlItems10("http://hojin-info.go.jp/ns/domain/biz/1#法人基本情報型");
 //const data = await sparql("select * { ?p <http://hojin-info.go.jp/ns/domain/biz/1#法人基本情報型> ?o } limit 10"); // なし
 //const data = values(await sparql("select ?o { ?s a <http://hojin-info.go.jp/ns/domain/biz/1#法人基本情報型>; <http://imi.go.jp/ns/core/rdf#ID>/<http://imi.go.jp/ns/core/rdf#識別値> ?o } limit 10")); // 法人番号を10コ
 //const data = values(await sparql("select distinct ?o { ?s <http://imi.go.jp/ns/core/rdf#市区町村> '堺市'; <http://imi.go.jp/ns/core/rdf#市区町村コード>/<http://imi.go.jp/ns/core/rdf#識別値> ?o }")); // 堺市の市区町村コード 27140
-const data = await sparql("select (count(?s) as ?c) { ?s <http://imi.go.jp/ns/core/rdf#住所>/<http://imi.go.jp/ns/core/rdf#市区町村コード>/<http://imi.go.jp/ns/core/rdf#識別値> '27140' }"); // 堺市の市区町村コード 27140 // 14?
+//const data = await gbiz.sparql("select (count(?s) as ?c) { ?s <http://imi.go.jp/ns/core/rdf#住所>/<http://imi.go.jp/ns/core/rdf#市区町村コード>/<http://imi.go.jp/ns/core/rdf#識別値> '27140' }"); // 堺市の市区町村コード 27140 // 14?
 //const data = await sparql("select ?s { ?s <http://imi.go.jp/ns/core/rdf#住所>/<http://imi.go.jp/ns/core/rdf#市区町村コード>/<http://imi.go.jp/ns/core/rdf#識別値> '27140' }");
 //const data = await sparqlItem("http://hojin-info.go.jp/data/basic/7120105001131");
 
-console.log(JSON.stringify(data, null, 2));
+//const data = await gbiz.getBasic(4000020182079);
+//const data = await gbiz.getCityID("大阪府", "堺市"); // 27140
+//const data = await gbiz.getCityID("福井県", "鯖江市"); // 18207
+//const data = await gbiz.getBasicByLocation("福井県鯖江市西山町１３－１");
+//const data = await gbiz.getBasicByLocation("福井県鯖江市新横江２丁目３番４号");
+//const data = await gbiz.getBasicByCityID(18207);
+const data = await gbiz.getBasicByKind(201);
+
+console.log(JSON.stringify(data, null, 2), data?.length);
+//console.log(JSON.stringify(data, null, 2));
 
 
 /*
