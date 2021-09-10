@@ -1,6 +1,10 @@
 import { CSV } from "https://js.sabae.cc/CSV.js";
 
-const csv = await CSV.fetch("data/diff_20210908.csv");
+// https://www.houjin-bangou.nta.go.jp/download/sabun/
+//const date = "20210908";
+//const date = "20210909";
+const date = "20210910";
+const csv = await CSV.fetch("data/diff_" + date + ".csv");
 console.log(csv.length, csv[0].length);
 
 const houjin = CSV.toJSON(await CSV.fetch("./houjin.csv"));
@@ -31,5 +35,5 @@ data.forEach(d => {
 
 // filter
 const data2 = data.filter(d => d.process == "新規" && d.correct == 0);
-await Deno.writeTextFile("data/diff_20210908_created.csv", CSV.stringify(data2));
+await Deno.writeTextFile("data/diff_" + date + "_created.csv", CSV.stringify(data2));
 

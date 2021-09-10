@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
 <title>都道府県別新規創業会社数</title>
-<meta property="og:title" content="都道府県別新規創業会社数 - 2021-09-0">
+<meta property="og:title" content="都道府県別新規創業会社数 - 2021-09-10">
 <meta name="format-detection" content="telephone=no"/>
 <script type='module'>
 
@@ -9,7 +9,9 @@ import { encodeHTML } from "https://js.sabae.cc/encodeHTML.js";
 import tabularmaps from 'https://www.stopcovid19.jp/tabularmapsjapan.mjs';
 
 window.onload = async () => {
-	const url = "./data/diff_20210908_created.csv";
+	//const url = "./data/diff_20210908_created.csv";
+	//const url = "./data/diff_20210909_created.csv";
+	const url = "./data/diff_20210910_created.csv";
 	const data = CSV.toJSON(await CSV.fetch(url));
 	console.log(data);
 	lastUpdate.textContent = "更新日: " + data[0].updateDate;
@@ -154,7 +156,7 @@ a {
 </head>
 <body>
 
-<h1>都道府県別新規創業会社数 2021-09-08</h1>
+<h1>都道府県別新規創業会社数</h1>
 
 <div id="tmapc"></div>
 <div id=lastUpdate></div>
