@@ -14,7 +14,8 @@ class GBizINFO extends SPARQL {
       } limit 1`))?.o.value;
   }
   async getBasic(corporateID) {
-    return this.cutType(await this.sparqlItem(`
+    return this.cutType(
+      await this.sparqlItem(`
       PREFIX  hj: <http://hojin-info.go.jp/ns/domain/biz/1#>
       PREFIX  ic: <http://imi.go.jp/ns/core/rdf#>
       SELECT DISTINCT ?corporateID ?corporateName ?corporateKana ?location ?moddate ?systemName ?classSInfo ?classHInfo ?cityID
@@ -43,10 +44,12 @@ class GBizINFO extends SPARQL {
             _:keyStatus ic:表記 ?classSInfo.
           } 
       } GROUP BY ?corporateID ?corporateName ?corporateKana ?location ?moddate ?systemName ?classSInfo ?classHInfo ?cityID
-    `));
+    `),
+    );
   }
   async getBasicByKind(kindID) {
-    return this.cutType(await this.sparqlItems(`
+    return this.cutType(
+      await this.sparqlItems(`
       PREFIX  hj: <http://hojin-info.go.jp/ns/domain/biz/1#>
       PREFIX  ic: <http://imi.go.jp/ns/core/rdf#>
       SELECT DISTINCT ?corporateID ?corporateName ?corporateKana ?cityID ?location ?moddate
@@ -73,10 +76,12 @@ class GBizINFO extends SPARQL {
             ?key hj:更新日時/ic:標準型日時 ?moddate.
           } 
       } GROUP BY ?corporateID ?corporateName ?corporateKana ?cityID ?location ?moddate
-    `));
+    `),
+    );
   }
   async getBasicByLocation(location) {
-    return this.cutType(await this.sparqlItems(`
+    return this.cutType(
+      await this.sparqlItems(`
       PREFIX  hj: <http://hojin-info.go.jp/ns/domain/biz/1#>
       PREFIX  ic: <http://imi.go.jp/ns/core/rdf#>
       SELECT DISTINCT ?corporateID ?corporateName ?corporateKana ?location ?moddate ?classSInfo 
@@ -104,7 +109,8 @@ class GBizINFO extends SPARQL {
             _:keyStatus ic:表記 ?classSInfo .
           } 
       } GROUP BY ?corporateID ?corporateName ?corporateKana ?location ?moddate ?classSInfo 
-    `));
+    `),
+    );
   }
   async getBasicByCityID(cityID) {
     return await this.sparqlItems(`

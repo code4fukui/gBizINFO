@@ -1,4 +1,3 @@
-
 import { GBizINFO } from "./GBizINFO.js";
 
 const gbiz = new GBizINFO();
@@ -23,7 +22,6 @@ const data = await gbiz.getBasicByKind(201);
 
 console.log(JSON.stringify(data, null, 2), data?.length);
 //console.log(JSON.stringify(data, null, 2));
-
 
 /*
 [
@@ -155,4 +153,3 @@ console.log(JSON.stringify(data, null, 2), data?.length);
   "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
 ]
 */
-

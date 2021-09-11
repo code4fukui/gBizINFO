@@ -9,25 +9,41 @@ import { encodeHTML } from "https://js.sabae.cc/encodeHTML.js";
 import tabularmaps from 'https://www.stopcovid19.jp/tabularmapsjapan.mjs';
 
 window.onload = async () => {
-	//const url = "./data/diff_20210908_created.csv";
-	//const url = "./data/diff_20210909_created.csv";
-	const url = "./data/diff_20210910_created.csv";
-	const data = CSV.toJSON(await CSV.fetch(url));
-	console.log(data);
-	lastUpdate.textContent = "更新日: " + data[0].updateDate;
-	
-	const prefs = {};
-	for (const d of data) {
-		let p = prefs[d.prefectureName];
-		if (p) {
-			p.push(d);
-		} else {
-			p = prefs[d.prefectureName] = [d];
+	const dates = CSV.toJSON(await CSV.fetch("/data/diff.csv"));
+	dates.reverse();
+	let first = true;
+	dates.forEach((d) => {
+		const opt = document.createElement("option");
+		opt.textContent = d.date;
+		if (first) {
+			opt.selected = true;
+			first = false;
 		}
-	}
-	const showunit = "社";
+		sel.appendChild(opt);
+	});
 
-	const show = () => {
+	const show = async () => {
+		const date = sel.value.replace(/\-/g, "");
+		console.log(date)
+		//const url = "./data/diff_20210908_created.csv";
+		//const url = "./data/diff_20210909_created.csv";
+		//const url = "./data/diff_20210910_created.csv";
+		const url = "./data/diff_" + date + "_created.csv";
+		const data = CSV.toJSON(await CSV.fetch(url));
+		//console.log(data);
+		//lastUpdate.textContent = "更新日: " + data[0].updateDate;
+		
+		const prefs = {};
+		for (const d of data) {
+			let p = prefs[d.prefectureName];
+			if (p) {
+				p.push(d);
+			} else {
+				p = prefs[d.prefectureName] = [d];
+			}
+		}
+		const showunit = "社";
+
 		//const showname = sel.value;
 		const getKPI = (pname, cname) => {
 			const p = prefs[cname];
@@ -38,7 +54,7 @@ window.onload = async () => {
 		const colorTabularMaps = (pname, tmap) => {
 			let min = 0;
 			let max = 100;
-			/*
+			
 			for (const c of tmap.children) {
 				const cname = c.cellname;
 				if (cname !== "-") {
@@ -48,7 +64,7 @@ window.onload = async () => {
 					if (kpi > max) { max = kpi; }
 				}
 			}
-			*/
+			
 			for (const c of tmap.children) {
 				const cname = c.cellname;
 				if (cname !== "-") {
@@ -59,7 +75,7 @@ window.onload = async () => {
 					const n = (parseFloat(kpi) - min) / (max - min);
 					const h = 0;
 					const s = 80;
-					const l = 100 - n * 20;
+					const l = 100 - n * 40;
 					const col = `hsl(${h},${s}%,${l}%)`;
 					//const col = `rgba(200,50,50,${l / 100 * .5})`;
 					c.style.backgroundColor = col;
@@ -89,21 +105,24 @@ window.onload = async () => {
 		};
 		tabularmaps.showJapan(setCellContent, colorTabularMaps, true);
 	}
+
 	/*
 	const nsel = document.location.hash.substring(1) || 0;
-	sel.selectedIndex = nsel;
-	show();
+	sel.value = nsel;
+	*/
 	sel.onchange = () => {
-		const nsel = sel.selectedIndex;
+		const nsel = sel.value;
+		/*
 		if (nsel) {
 			document.location.hash = "#" + nsel;
 		} else {
 			history.replaceState(null, null, " ");
 		}
+		*/
 		show();
 	};
-	*/
-	show();
+	
+	await show();
 };
 
 </script>
@@ -132,6 +151,10 @@ h1 {
 	margin: .2vmax;
 }
 /* other */
+select {
+	font-size: 20px;
+	margin: 0 0 .5em 0;
+}
 #detail {
 	text-align: left;
 	padding: .3em;
@@ -158,8 +181,11 @@ a {
 
 <h1>都道府県別新規創業会社数</h1>
 
+<select id=sel></select>
+
 <div id="tmapc"></div>
-<div id=lastUpdate></div>
+<br>
+<!--<div id=lastUpdate></div>-->
 <div id="detail"></div>
 
 <div class="credit">
