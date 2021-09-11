@@ -9,7 +9,7 @@ import { encodeHTML } from "https://js.sabae.cc/encodeHTML.js";
 import tabularmaps from 'https://www.stopcovid19.jp/tabularmapsjapan.mjs';
 
 window.onload = async () => {
-	const dates = CSV.toJSON(await CSV.fetch("/data/diff.csv"));
+	const dates = CSV.toJSON(await CSV.fetch("./data/diff.csv"));
 	dates.reverse();
 	let first = true;
 	dates.forEach((d) => {
