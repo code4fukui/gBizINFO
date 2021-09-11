@@ -117,23 +117,22 @@ window.onload = async () => {
 			if (!cname) {
 				cname = bkcname;
 			}
-			if (!cname) {
-				return;
-			}
 			bkcname = cname;
-			const p = prefs[cname];
+			let p = prefs[cname];
 			if (!p) {
-				detail.textContent = "";
-				return;
+				//detail.textContent = "";
+				p = data;
+				cname = "全国";
 			}
 			const np = p.filter(d => d.process == "新規");
 			const nm = p.filter(d => d.process != "新規");
 			const add = (name, p) => {
-				return `<h3>${cname}の${name} ${p.length}社 (${sel.value})</h3>` + p.map(d => {
+				return `<h3>${name} ${p.length}社</h3>` + p.map(d => {
 					return { name: encodeHTML(d.name), city: encodeHTML(d.cityName) }
 				}).map(({ name, city }) => `<a href="https://www.google.com/search?q=${name}">${name}(${city})</a>`).join(", ");
 			}
-			detail.innerHTML = add("創業", np) + add("廃業", nm);
+			const head = `<h3>${cname}の創業${np.length}社-廃業${nm.length}社 = ${np.length - nm.length}社 (${sel.value})</h3>`;
+			detail.innerHTML = head + add("創業", np) + add("廃業", nm);
 		};
 		const setCellContent = (c, pname, cname) => {
 			c.textContent = "";
