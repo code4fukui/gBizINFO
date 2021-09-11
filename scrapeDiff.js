@@ -6,12 +6,11 @@ export const scrapeDiff = async () => {
   const url = "https://www.houjin-bangou.nta.go.jp/download/sabun/";
   const html = await (await fetch(url)).text();
   //const html = await Deno.readTextFile("list.html"); // for initial data
-  
+
   const dom = HTMLParser.parse(html);
-  const token =
-    dom.querySelector(
-      'input[name="jp.go.nta.houjin_bangou.framework.web.common.CNSFWTokenProcessor.request.token"]',
-    ).attributes.value;
+  const token = dom.querySelector(
+    'input[name="jp.go.nta.houjin_bangou.framework.web.common.CNSFWTokenProcessor.request.token"]',
+  ).attributes.value;
   const trs = dom.querySelectorAll(".tbl03 tr");
   const list = trs.map((tr) => {
     const a = tr.querySelector("a");
@@ -23,7 +22,7 @@ export const scrapeDiff = async () => {
       fileNo: a.attributes.onclick.match(/\((\d+)\)/)[1],
       token,
     };
-  }).filter(a => a);
+  }).filter((a) => a);
   console.log(trs.length);
   // update
   const data = CSV.toJSON(await CSV.fetch("data/diff.csv"));

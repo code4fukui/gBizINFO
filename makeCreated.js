@@ -51,7 +51,10 @@ export const makeCreated = async (date) => {
     "data/diff_" + date + "_created.csv",
     CSV.stringify(data2),
   );
-  const data3 = data.filter((d) => (d.process == "登記記録の閉鎖等" || d.process == "商号の登記の抹消" || d.process == "削除") && d.correct == 0);
+  const data3 = data.filter((d) =>
+    (d.process == "登記記録の閉鎖等" || d.process == "商号の登記の抹消" || d.process == "削除") &&
+    d.correct == 0
+  );
   await Deno.writeTextFile(
     "data/diff_" + date + "_terminated.csv",
     CSV.stringify(data3),
