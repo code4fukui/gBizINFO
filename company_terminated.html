@@ -1,12 +1,14 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
-<title>創業ダッシュボード</title>
-<meta property="og:title" content="創業ダッシュボード">
+<title>廃業ダッシュボード</title>
+<meta property="og:title" content="廃業ダッシュボード">
 <meta name="format-detection" content="telephone=no"/>
 <script type='module'>
 
 import { CSV } from "https://js.sabae.cc/CSV.js";
 import { encodeHTML } from "https://js.sabae.cc/encodeHTML.js";
 import tabularmaps from 'https://www.stopcovid19.jp/tabularmapsjapan.mjs';
+
+const type = "terminated";
 
 window.onload = async () => {
 	const dates = CSV.toJSON(await CSV.fetch("./data/diff.csv"));
@@ -25,10 +27,7 @@ window.onload = async () => {
 	const show = async () => {
 		const date = sel.value.replace(/\-/g, "");
 		console.log(date)
-		//const url = "./data/diff_20210908_created.csv";
-		//const url = "./data/diff_20210909_created.csv";
-		//const url = "./data/diff_20210910_created.csv";
-		const url = "./data/diff_" + date + "_created.csv";
+		const url = "./data/diff_" + date + "_" + type + ".csv";
 		const data = CSV.toJSON(await CSV.fetch(url));
 		//console.log(data);
 		//lastUpdate.textContent = "更新日: " + data[0].updateDate;
@@ -73,8 +72,8 @@ window.onload = async () => {
 						continue;
 					}
 					const n = (parseFloat(kpi) - min) / (max - min);
-					const h = 0;
-					const s = 80;
+					const h = 220;
+					const s = 50;
 					const l = 100 - n * 40;
 					const col = `hsl(${h},${s}%,${l}%)`;
 					//const col = `rgba(200,50,50,${l / 100 * .5})`;
@@ -137,7 +136,7 @@ h1 {
 	margin: 0 0 .5em;
 	font-size: 4vw;
 	padding: 2vw 0;
-	background-color: #fd3a3a;
+	background-color: #718ab2;
 	color: white;
 }
 /* tabularmaps */
@@ -183,7 +182,7 @@ a {
 </head>
 <body>
 
-<h1>創業ダッシュボード</h1>
+<h1>廃業ダッシュボード</h1>
 
 <select id=sel></select>
 
@@ -193,7 +192,7 @@ a {
 <div id="detail"></div>
 
 <div class="credit">
-APP: CC BY <a href=https://fukuno.jig.jp/3332>@taisukef 福野泰介</a><br>
+APP: CC BY <a href=https://fukuno.jig.jp/3335>@taisukef 福野泰介</a><br>
 DATA: <a href="https://www.houjin-bangou.nta.go.jp/">国税庁法人番号公表サイト</a> → (CSV化ツール by <a href="https://github.com/code4fukui/gBizINFO/">gBizINFO</a>)<br>
 LAYOUT: <a href=https://www.stopcovid19.jp/tabularmapsjapan.csv>TabularMaps Japan - 日本カラム地図 CSV</a> CC0 <a href=https://github.com/tabularmaps/hq>カラム地図 / TabularMaps on Github</a><br>
 </div>

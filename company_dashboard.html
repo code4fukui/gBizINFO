@@ -1,12 +1,14 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
-<title>創業ダッシュボード</title>
-<meta property="og:title" content="創業ダッシュボード">
+<title>創廃業ダッシュボード</title>
+<meta property="og:title" content="創廃業ダッシュボード">
 <meta name="format-detection" content="telephone=no"/>
 <script type='module'>
 
 import { CSV } from "https://js.sabae.cc/CSV.js";
 import { encodeHTML } from "https://js.sabae.cc/encodeHTML.js";
 import tabularmaps from 'https://www.stopcovid19.jp/tabularmapsjapan.mjs';
+
+const type = "terminated";
 
 window.onload = async () => {
 	const dates = CSV.toJSON(await CSV.fetch("./data/diff.csv"));
@@ -24,12 +26,14 @@ window.onload = async () => {
 
 	const show = async () => {
 		const date = sel.value.replace(/\-/g, "");
-		console.log(date)
-		//const url = "./data/diff_20210908_created.csv";
-		//const url = "./data/diff_20210909_created.csv";
-		//const url = "./data/diff_20210910_created.csv";
-		const url = "./data/diff_" + date + "_created.csv";
-		const data = CSV.toJSON(await CSV.fetch(url));
+		
+		const url1 = "./data/diff_" + date + "_created.csv";
+		const data1 = CSV.toJSON(await CSV.fetch(url1));
+		const url2 = "./data/diff_" + date + "_terminated.csv";
+		const data2 = CSV.toJSON(await CSV.fetch(url2));
+		const data = [];
+		data1.forEach(d => data.push(d));
+		data2.forEach(d => data.push(d));
 		//console.log(data);
 		//lastUpdate.textContent = "更新日: " + data[0].updateDate;
 		
@@ -47,13 +51,19 @@ window.onload = async () => {
 		//const showname = sel.value;
 		const getKPI = (pname, cname) => {
 			const p = prefs[cname];
-			const kpi = p ? p.length : 0;
 			const unit = showunit;
-			return [kpi, unit];
+			if (!p) {
+				return [0, unit, 0, 0];
+			}
+			const np = p.filter(d => d.process == "新規").length;
+			const nm = p.length - np;
+			const kpi = np - nm;
+			return [kpi, unit, np, nm];
 		};
 		const colorTabularMaps = (pname, tmap) => {
-			let min = 0;
-			let max = 100;
+			/*
+			let min = 100000;
+			let max = -min;
 			
 			for (const c of tmap.children) {
 				const cname = c.cellname;
@@ -64,6 +74,9 @@ window.onload = async () => {
 					if (kpi > max) { max = kpi; }
 				}
 			}
+			*/
+			const min = -200;
+			const max = 200;
 			
 			for (const c of tmap.children) {
 				const cname = c.cellname;
@@ -72,14 +85,29 @@ window.onload = async () => {
 					if (isNaN(kpi)) {
 						continue;
 					}
-					const n = (parseFloat(kpi) - min) / (max - min);
-					const h = 0;
-					const s = 80;
-					const l = 100 - n * 40;
-					const col = `hsl(${h},${s}%,${l}%)`;
-					//const col = `rgba(200,50,50,${l / 100 * .5})`;
-					c.style.backgroundColor = col;
-					c.style.color = "black";
+					//const n = (parseFloat(kpi) - min) / (max - min);
+					if (kpi == 0) {
+						c.style.backgroundColor = "white";
+						c.style.color = "black";
+					} else if (kpi > 0) {
+						const n = parseFloat(kpi) / max;
+						const h = 7;
+						const s = 80;
+						const l = 95 - n * 40;
+						const col = `hsl(${h},${s}%,${l}%)`;
+						//const col = `rgba(200,50,50,${l / 100 * .5})`;
+						c.style.backgroundColor = col;
+						c.style.color = l > 70 ? "black" : "white";
+					} else if (kpi < 0) {
+						const n = parseFloat(kpi) / min;
+						const h = 220;
+						const s = 50;
+						const l = 95 - n * 40;
+						const col = `hsl(${h},${s}%,${l}%)`;
+						//const col = `rgba(200,50,50,${l / 100 * .5})`;
+						c.style.backgroundColor = col;
+						c.style.color = l > 70 ? "black" : "white";
+					}
 					//c.appendChild(val);
 					//console.log(kpi, l, col);
 				}
@@ -94,13 +122,23 @@ window.onload = async () => {
 			c.appendChild(div);
 			const div2 = cr("div");
 			div2.className = "val";
-			const [kpi, unit] = getKPI(pname, cname);
-			div2.textContent = (isNaN(kpi) ? "-" : kpi) + unit;
+			const [kpi, unit, np, nm] = getKPI(pname, cname);
+			div2.innerHTML = `<span class=num>${kpi > 0 ? "+" : ""}${kpi}社</span><br><span class=sub><span class=created>+${np}</span> <span class=terminated>-${nm}</span></span>`;
 			c.appendChild(div2);
 			c.onclick = () => {
-				detail.innerHTML = (prefs[cname] || []).map(d => encodeHTML(d.name)).map(name => `<a href="https://www.google.com/search?q=${name}">${name}</a>`).join(", ");
-				//const url = "https://www.stopcovid19.jp/beds_graph.html#" + cname;
-				//window.open(url, "_blank");
+				const p = prefs[cname];
+				if (!p) {
+					detail.textContent = "";
+					return;
+				}
+				const np = p.filter(d => d.process == "新規");
+				const nm = p.filter(d => d.process != "新規");
+				const add = (name, p) => {
+					return `<h3>${name} ${p.length}社</h3>` + p.map(d => {
+						return { name: encodeHTML(d.name), city: encodeHTML(d.cityName) }
+					}).map(({ name, city }) => `<a href="https://www.google.com/search?q=${name}">${name}(${city})</a>`).join(", ");
+				}
+				detail.innerHTML = add("創業", np) + add("廃業", nm);
 			};
 		};
 		tabularmaps.showJapan(setCellContent, colorTabularMaps, true);
@@ -135,24 +173,43 @@ body {
 }
 h1 {
 	margin: 0 0 .5em;
-	font-size: 4vw;
+	font-size: 5vw;
 	padding: 2vw 0;
-	background-color: #fd3a3a;
+	background-color: #fd3a3a; /* #718ab2; */
 	color: white;
+}
+h3 {
+	padding: .2em 0;
+	margin: 0;
+}
+.sub {
+	font-size: 83%;
+	display: inline-block;
+	background-color: white;
+	padding: 0 .3em;
+}
+.num {
+	font-weight: bold;
+}
+.created {
+	color: #fd3a3a;
+}
+.terminated {
+	color:#718ab2;
 }
 /* tabularmaps */
 #tmapc {
 	max-width: 700px;
 	margin: 0 auto;
 }
-#tmapc span {
-	font-size: min(1.5vmax, 15px);
+#tmapc > div > span {
+	font-size: min(1.5vw, 15px);
 	align-items: center;
 	justify-content: center;
-	border-radius: .5vmax;
-	border: .1vmax solid #333;
-	padding: .2vmax .2vmax;
-	margin: .2vmax;
+	border-radius: .5vw;
+	border: .1vw solid #333;
+	padding: .1vw .1vw;
+	margin: .2vw;
 }
 /* other */
 select {
@@ -183,7 +240,7 @@ a {
 </head>
 <body>
 
-<h1>創業ダッシュボード</h1>
+<h1>創廃業ダッシュボード</h1>
 
 <select id=sel></select>
 
@@ -193,7 +250,7 @@ a {
 <div id="detail"></div>
 
 <div class="credit">
-APP: CC BY <a href=https://fukuno.jig.jp/3332>@taisukef 福野泰介</a><br>
+APP: CC BY <a href=https://fukuno.jig.jp/3335>@taisukef 福野泰介</a><br>
 DATA: <a href="https://www.houjin-bangou.nta.go.jp/">国税庁法人番号公表サイト</a> → (CSV化ツール by <a href="https://github.com/code4fukui/gBizINFO/">gBizINFO</a>)<br>
 LAYOUT: <a href=https://www.stopcovid19.jp/tabularmapsjapan.csv>TabularMaps Japan - 日本カラム地図 CSV</a> CC0 <a href=https://github.com/tabularmaps/hq>カラム地図 / TabularMaps on Github</a><br>
 </div>
