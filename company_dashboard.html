@@ -6,7 +6,7 @@
 
 import { CSV } from "https://js.sabae.cc/CSV.js";
 import { encodeHTML } from "https://js.sabae.cc/encodeHTML.js";
-import tabularmaps from 'https://www.stopcovid19.jp/tabularmapsjapan.mjs';
+import tabularmaps from "./tabularmapsjapan.js";
 
 let bkcname = null;
 
@@ -50,15 +50,28 @@ window.onload = async () => {
 
 		//const showname = sel.value;
 		const getKPI = (pname, cname) => {
-			const p = prefs[cname];
-			const unit = showunit;
-			if (!p) {
-				return [0, unit, 0, 0];
+			if (pname == "日本") {
+				const p = prefs[cname];
+				const unit = showunit;
+				if (!p) {
+					return [0, unit, 0, 0];
+				}
+				const np = p.filter(d => d.process == "新規").length;
+				const nm = p.length - np;
+				const kpi = np - nm;
+				return [kpi, unit, np, nm];
+			} else {
+				const p = prefs[pname];
+				const unit = showunit;
+				if (!p) {
+					return [0, unit, 0, 0];
+				}
+				const np = p.filter(d => d.process == "新規" && d.cityName.startsWith(cname)).length;
+				const nm = p.filter(d => d.process != "新規" && d.cityName.startsWith(cname)).length;
+				const kpi = np - nm;
+				return [kpi, unit, np, nm];
+
 			}
-			const np = p.filter(d => d.process == "新規").length;
-			const nm = p.length - np;
-			const kpi = np - nm;
-			return [kpi, unit, np, nm];
 		};
 		const colorTabularMaps = (pname, tmap) => {
 			/*
@@ -146,9 +159,14 @@ window.onload = async () => {
 			const [kpi, unit, np, nm] = getKPI(pname, cname);
 			div2.innerHTML = `<span class=num>${kpi > 0 ? "+" : ""}${kpi}社</span><br><span class=sub><span class=created>+${np}</span> <span class=terminated>-${nm}</span></span>`;
 			c.appendChild(div2);
-			c.onclick = () => showDetail(cname);
+			console.log(pname)
+			if (pname == "日本") {
+				c.onclick = () => {
+					showDetail(cname);
+				};
+			}
 		};
-		tabularmaps.showJapan(setCellContent, colorTabularMaps, true);
+		tabularmaps.showJapan(setCellContent, colorTabularMaps, false);
 		showDetail();
 	}
 
@@ -189,6 +207,9 @@ h1 {
 h3 {
 	padding: .2em 0;
 	margin: 0;
+}
+#back {
+	margin: .5em;
 }
 .sub {
 	font-size: 83%;
@@ -248,12 +269,12 @@ a {
 </head>
 <body>
 
-<h1>創廃業ダッシュボード</h1>
+<h1>創廃業ダッシュボード <span id=tmtitle></span></h1>
 
 <select id=sel></select>
 
 <div id="tmapc"></div>
-<br>
+<button id="back">戻る</button><br>
 <!--<div id=lastUpdate></div>-->
 <div id="detail"></div>
 
