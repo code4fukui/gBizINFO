@@ -18,7 +18,10 @@ const gbiz = new GBizINFO();
 //const data = await gbiz.getBasicByLocation("福井県鯖江市西山町１３－１");
 //const data = await gbiz.getBasicByLocation("福井県鯖江市新横江２丁目３番４号");
 //const data = await gbiz.getBasicByCityID(18207);
-const data = await gbiz.getBasicByKind(201);
+//const data = await gbiz.getBasicByKind(201);
+//const data = await gbiz.getDetail(3210001017663); // 創業
+//const data = await gbiz.getDetail(4210001002945); // 廃業、ステータスみないと廃業しているかもしれない
+const data = await gbiz.getDetail(1010001088074);
 
 console.log(JSON.stringify(data, null, 2), data?.length);
 //console.log(JSON.stringify(data, null, 2));

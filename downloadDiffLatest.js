@@ -14,7 +14,6 @@ const token = "f83622bb-6551-440a-95b4-1192ff13fb5a"; // いつまで有効?
 const list = CSV.toJSON(await CSV.fetch("data/diff.csv"));
 const lastid = list[list.length - 1].fileNo;
 const nextid = parseInt(lastid) + 3; // 固定?
-console.log(lastid, nextid);
 
 const url =
   "https://www.houjin-bangou.nta.go.jp/download/sabun/index.html?event=download&selDlFileNo=" +
