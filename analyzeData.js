@@ -1,6 +1,9 @@
 import { CSV } from "https://js.sabae.cc/CSV.js";
 
-const data = CSV.toJSON(await CSV.fetch("./data/18207/company.csv"));
+const fn = "./data/18207/company.csv";
+const data = CSV.toJSON(await CSV.fetch(fn));
+data.sort((a, b) => a.corporateID.localeCompare(b.corporateID));
+await Deno.writeTextFile(fn, CSV.stringify(data));
 
 const data2 = data.filter(d => {
   const s = d.corporateName;
