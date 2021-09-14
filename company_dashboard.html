@@ -2,13 +2,18 @@
 <title>創廃業ダッシュボード</title>
 <meta property="og:title" content="創廃業ダッシュボード">
 <meta name="format-detection" content="telephone=no"/>
-<script type='module'>
-
+<script type="module">
 import { CSV } from "https://js.sabae.cc/CSV.js";
 import { encodeHTML } from "https://js.sabae.cc/encodeHTML.js";
 import tabularmaps from "./tabularmapsjapan.js";
+import { JAPAN_PREF, JAPAN_PREF_EN } from "https://js.sabae.cc/JAPAN_PREF.js";
+
+const convertJapanEn2Ja = (en) => {
+	return JAPAN_PREF[JAPAN_PREF_EN.indexOf(en)];
+}
 
 let bkcname = null;
+
 
 window.onload = async () => {
 	const dates = CSV.toJSON(await CSV.fetch("./data/diff.csv"));
@@ -131,11 +136,16 @@ window.onload = async () => {
 				cname = bkcname;
 			}
 			bkcname = cname;
-			let p = prefs[cname];
-			if (!p) {
-				//detail.textContent = "";
+			
+			let p = null;
+			if (!cname) {
 				p = data;
 				cname = "全国";
+			} else {
+				p = prefs[cname];
+				if (!p) {
+					p = [];
+				}
 			}
 			const np = p.filter(d => d.process == "新規");
 			const nm = p.filter(d => d.process != "新規");
@@ -159,7 +169,6 @@ window.onload = async () => {
 			const [kpi, unit, np, nm] = getKPI(pname, cname);
 			div2.innerHTML = `<span class=num>${kpi > 0 ? "+" : ""}${kpi}社</span><br><span class=sub><span class=created>+${np}</span> <span class=terminated>-${nm}</span></span>`;
 			c.appendChild(div2);
-			console.log(pname)
 			if (pname == "日本") {
 				c.onclick = () => {
 					showDetail(cname);
@@ -167,7 +176,9 @@ window.onload = async () => {
 			}
 		};
 		tabularmaps.showJapan(setCellContent, colorTabularMaps, false);
-		showDetail();
+
+		const pname = convertJapanEn2Ja(document.location.hash.substring(1));
+		showDetail(pname);
 	}
 
 	/*
