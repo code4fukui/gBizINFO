@@ -113,10 +113,10 @@ class GBizINFO extends SPARQL {
     );
   }
   async getBasicByCityID(cityID) {
-    return await this.sparqlItems(`
+    return this.cutType(await this.sparqlItems(`
       PREFIX  hj: <http://hojin-info.go.jp/ns/domain/biz/1#>
       PREFIX  ic: <http://imi.go.jp/ns/core/rdf#>
-      SELECT DISTINCT ?corporateID ?corporateName ?corporateKana ?location ?moddate ?systemName ?classSInfo 
+      SELECT DISTINCT ?corporateID ?corporateName ?corporateKana ?location ?moddate ?classSInfo 
       FROM <http://hojin-info.go.jp/graph/hojin> { 
           ?s hj:法人基本情報 ?key. 
           OPTIONAL{ ?key ic:ID/ic:識別値 ?corporateID .} 
@@ -140,8 +140,8 @@ class GBizINFO extends SPARQL {
           OPTIONAL{?key hj:区分 _:keyStatus. 
                     _:keyStatus ic:種別 '処理区分'. 
                     _:keyStatus ic:表記 ?classSInfo .} 
-      } GROUP BY ?corporateID ?corporateName ?corporateKana ?location ?moddate ?classSInfo 
-    `);
+      } GROUP BY ?corporateID ?corporateName ?corporateKana ?location ?moddate ?classSInfo
+    `));
   }
 }
 
