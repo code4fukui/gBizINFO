@@ -4,8 +4,8 @@ import util from 'https://taisukef.github.io/util/util.mjs'
 const showJapan = async (setCellContent, colorTabularMaps, onlypref) => {
 	let cities = null;
 	if (!onlypref) {
-		const url_citiesjp = 'https://code4fukui.github.io/localgovjp/localgovjp-utf8.csv'
-		cities = await util.fetchCSVtoJSON(url_citiesjp)
+		const urlCitiesjp = 'https://code4fukui.github.io/localgovjp/localgovjp-utf8.csv'
+		cities = await util.fetchCSVtoJSON(urlCitiesjp)
 		// console.log(cities)
 	}
 	const getCityData = function(pref, city) {
