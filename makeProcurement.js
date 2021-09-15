@@ -43,12 +43,12 @@ const getProcurement = async (startdate, enddate) => {
 const fetchPastData = async () => {
   //const start = new Day(2020, 3, 1);
   const start = new Day(2020, 4, 1);
+  //const start = new Day(2021, 5, 1);
   const nextmonth = new Day().nextMonth().getFirstDayOfMonth();
-  let day = start;
   for (let day = start; day.isBefore(nextmonth); day = day.nextMonth()) {
     const end = day.getLastDayOfMonth();
     console.log(day.toStringYMD(), end.toStringYMD());
-    const data = await getProcurement(start.toStringYMD(), end.toStringYMD());
+    const data = await getProcurement(day.toStringYMD(), end.toStringYMD());
     if (data) {
       const fn = day.toStringYMD().substring(0, 6);
       await Deno.writeTextFile("data/procurement/" + fn + ".csv", CSV.stringify(data));
@@ -77,15 +77,15 @@ const makeByAmount = async (name, f) => {
   await Deno.writeTextFile(path + "yen/" + name + ".csv", CSV.stringify(res2));
 };
 
-//await fetchPastData();
+await fetchPastData();
 
 //await makeByAmount(10);
 //await makeByAmount(11);
-await makeByAmount("0", (yen) => yen == 0);
 //await makeByAmount(1);
 //await makeByAmount(100, (yen) => yen <= 100);
 //await makeByAmount(1, (yen) => yen == 1);
-await makeByAmount("over1G", (yen) => yen >= 1000 * 1000 * 1000);
+//await makeByAmount("0", (yen) => yen == 0);
+//await makeByAmount("over1G", (yen) => yen >= 1000 * 1000 * 1000);
 
 
 
