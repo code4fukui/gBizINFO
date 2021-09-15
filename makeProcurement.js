@@ -80,8 +80,8 @@ const makeByAmount = async (name, f) => {
     data2.forEach(d => res.push(d));
   }
   console.log(res.length);
-  //const res2 = ArrayUtil.toUniqueByString(res);
-  const res2 = res;
+  const res2 = ArrayUtil.toUniqueByString(res);
+  //const res2 = res;
   console.log(res2.length);
   res2.sort((a, b) => parseInt(b.amount) - parseInt(a.amount));
   await Deno.writeTextFile(path + "yen/" + name + ".csv", CSV.stringify(res2));

@@ -264,7 +264,7 @@ class GBizINFO extends SPARQL {
       ORDER BY ?corporateID  LIMIT 1000
       `);
   */
-  
+  /*
       return await this.cutType(await this.sparqlItems(`
         PREFIX hj: <http://hojin-info.go.jp/ns/domain/biz/1#>
         PREFIX ic: <http://imi.go.jp/ns/core/rdf#>
@@ -280,13 +280,14 @@ class GBizINFO extends SPARQL {
         }
         LIMIT 100
       `));
+      */
       /*
         GROUP BY ?corporateID ?corporateName
           ORDER BY ?corporateID  LIMIT 1000
       */
       
       //  cpu 5.667 total　with Elasticsearch
-      /*
+      
       return await this.cutType(await this.sparqlItems(`
         PREFIX hj: <http://hojin-info.go.jp/ns/domain/biz/1#>
         PREFIX ic: <http://imi.go.jp/ns/core/rdf#>
@@ -308,10 +309,14 @@ class GBizINFO extends SPARQL {
               neptune-fts:config neptune-fts:return ?key1.
             }
           }
-        } GROUP BY ?corporateID ?corporateName
-          ORDER BY ?corporateID LIMIT 1000
+        }
+        LIMIT 100
       `));
-      */
+      
+     /*
+         GROUP BY ?corporateID ?corporateName
+          ORDER BY ?corporateID LIMIT 1000
+     */
   }
 }
 

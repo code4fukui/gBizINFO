@@ -2,6 +2,13 @@ import { CSV } from "https://js.sabae.cc/CSV.js";
 
 // https://www.houjin-bangou.nta.go.jp/download/sabun/
 
+export const filterCreated = (d) => d.process == "新規" && d.correct == 0;
+
+export const filterTerminated = (d) => {
+  return (d.process == "登記記録の閉鎖等" || d.process == "商号の登記の抹消" || d.process == "削除") &&
+    d.correct == 0;
+};
+
 export const makeCreated = async (date) => {
   const csv = await CSV.fetch("data/diff_" + date + ".csv");
   console.log(csv.length, csv[0].length);
@@ -46,15 +53,12 @@ export const makeCreated = async (date) => {
   99,削除
   */
   // filter
-  const data2 = data.filter((d) => d.process == "新規" && d.correct == 0);
+  const data2 = data.filter(filterCreated);
   await Deno.writeTextFile(
     "data/diff_" + date + "_created.csv",
     CSV.stringify(data2),
   );
-  const data3 = data.filter((d) =>
-    (d.process == "登記記録の閉鎖等" || d.process == "商号の登記の抹消" || d.process == "削除") &&
-    d.correct == 0
-  );
+  const data3 = data.filter(filterTerminated);
   await Deno.writeTextFile(
     "data/diff_" + date + "_terminated.csv",
     CSV.stringify(data3),
