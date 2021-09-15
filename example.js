@@ -21,7 +21,10 @@ const gbiz = new GBizINFO();
 //const data = await gbiz.getBasicByKind(201);
 //const data = await gbiz.getDetail(3210001017663); // 創業
 //const data = await gbiz.getDetail(4210001002945); // 廃業、ステータスみないと廃業しているかもしれない
-const data = await gbiz.getDetail(1010001088074);
+//const data = await gbiz.getDetail(1010001088074);
+//const data = await gbiz.getHojinName('経済産業省');
+const data = await gbiz.getHojinName('デジタル');
+// 7.368 total
 
 console.log(JSON.stringify(data, null, 2), data?.length);
 //console.log(JSON.stringify(data, null, 2));

@@ -40,10 +40,7 @@ const getProcurement = async (startdate, enddate) => {
   return res;
 };
 
-const fetchPastData = async () => {
-  //const start = new Day(2020, 3, 1);
-  const start = new Day(2020, 4, 1);
-  //const start = new Day(2021, 5, 1);
+const downloadProcurement = async (start) => {
   const nextmonth = new Day().nextMonth().getFirstDayOfMonth();
   for (let day = start; day.isBefore(nextmonth); day = day.nextMonth()) {
     const end = day.getLastDayOfMonth();
@@ -55,6 +52,18 @@ const fetchPastData = async () => {
     }
   }
 };
+const downloadProcurementPast = async () => {
+  //const start = new Day(2020, 3, 1);
+  const start = new Day(2020, 4, 1);
+  //const start = new Day(2021, 5, 1);
+  return await downloadProcurement(start);
+};
+
+const downloadProcurementThisMonth = async () => {
+  const start = new Day().getFirstDayOfMonth();
+  return await downloadProcurement(start);
+};
+
 
 const makeByAmount = async (name, f) => {
   const path = "data/procurement/";
@@ -71,21 +80,23 @@ const makeByAmount = async (name, f) => {
     data2.forEach(d => res.push(d));
   }
   console.log(res.length);
-  const res2 = ArrayUtil.toUniqueByString(res);
+  //const res2 = ArrayUtil.toUniqueByString(res);
+  const res2 = res;
   console.log(res2.length);
   res2.sort((a, b) => parseInt(b.amount) - parseInt(a.amount));
   await Deno.writeTextFile(path + "yen/" + name + ".csv", CSV.stringify(res2));
 };
 
-await fetchPastData();
+//await downloadProcurementPast();
+await downloadProcurementThisMonth();
 
 //await makeByAmount(10);
 //await makeByAmount(11);
 //await makeByAmount(1);
 //await makeByAmount(100, (yen) => yen <= 100);
 //await makeByAmount(1, (yen) => yen == 1);
-//await makeByAmount("0", (yen) => yen == 0);
-//await makeByAmount("over1G", (yen) => yen >= 1000 * 1000 * 1000);
+await makeByAmount("0", (yen) => yen == 0);
+await makeByAmount("over1G", (yen) => yen >= 1000 * 1000 * 1000);
 
 
 
