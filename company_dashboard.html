@@ -71,8 +71,8 @@ window.onload = async () => {
 				if (!p) {
 					return [0, unit, 0, 0];
 				}
-				const np = p.filter(d => d.process == "新規" && d.cityName.startsWith(cname)).length;
-				const nm = p.filter(d => d.process != "新規" && d.cityName.startsWith(cname)).length;
+				const np = p.filter(d => d.process == "新規" && d.cityName.indexOf(cname) >= 0).length;
+				const nm = p.filter(d => d.process != "新規" && d.cityName.indexOf(cname) >= 0).length;
 				const kpi = np - nm;
 				return [kpi, unit, np, nm];
 
