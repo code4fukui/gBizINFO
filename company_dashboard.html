@@ -133,6 +133,7 @@ window.onload = async () => {
 			}
 		};
 		const showDetail = (cname) => {
+			console.log("pname", cname)
 			if (!cname) {
 				cname = bkcname;
 			}
@@ -155,7 +156,8 @@ window.onload = async () => {
 					return { name: encodeHTML(d.name), city: encodeHTML(d.cityName) }
 				}).map(({ name, city }) => `<a href="https://www.google.com/search?q=${name}">${name}(${city})</a>`).join(", ");
 			}
-			const head = `<h3>${cname}の創業${np.length}社-廃業${nm.length}社 = ${np.length - nm.length}社 (${sel.value})</h3>`;
+			const sum = np.length - nm.length;
+			const head = `<h3>${cname}の創業${np.length}社-廃業${nm.length}社 = ${sum > 0 ? "+" : ""}${sum}社 (${sel.value})</h3>`;
 			detail.innerHTML = head + add("創業", np) + add("廃業", nm);
 		};
 		const setCellContent = (c, pname, cname) => {
