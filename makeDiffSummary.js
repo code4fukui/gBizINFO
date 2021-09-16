@@ -30,7 +30,7 @@ const makeDiffSummary = async () => {
     
     for (const dd of data) {
       const corporateID = dd[6];
-      const type = await gbiz.getInfoByCorporateID(dd.corporateNumber);
+      const type = await gbiz.parseCorporateID(dd.corporateNumber);
       //console.log(type)
       if (!chk[type.tokitype]) {
         chk[type.tokitype] = dd;

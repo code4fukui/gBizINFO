@@ -323,7 +323,7 @@ class GBizINFO extends SPARQL {
   filterByCorporateID(a, b) {
     return parseInt(a.corporateID.substring(1)) - parseInt(b.corporateID.substring(1));
   }
-  async getInfoByCorporateID(id) {
+  async parseCorporateID(id) {
     id = id.toString();
     if (!isValid(id)) {
       return null;

@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+<title>法人番号パーサー</title>
+</head><body>
+
+<div class="jumbotron">
+<h1 class="display-4">法人番号パーサー</h1>
+<p class="lead">法人番号をパースして、登記所と陶器種別を表示します</p>
+</div>
+
+<div class="mx-5">
+  <input id="hojinid" placeholder="法人番号" style="width:70vw;font-size: 24px; " class="border px-3 mx-auto pt-3 pb-3">
+</div>
+<div class="m-5">
+  <div id="divres" style="width:70vw; font-size: 24px; min-height:7em;" class="border px-3 mx-0 pt-3 pb-3"></div>
+</div>
+
+<footer class="text-muted">
+  <div class="container my-4 mx-0">
+    <p>Design: <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a></p>
+    <p>App: CC BY <a href="https://fukuno.jig.jp/3340">福野泰介の一日一創</a> by <a href="https://twitter.com/taisukef">@taisukef</a> (<a href=https://github.com/code4sabae/csvbeauty/>src on GitHub</a>)</p>
+  </div>
+</footer>
+
+<script type="module">
+  // 3011101042092
+import { GBizINFO } from "./GBizINFO.js";
+
+const gbiz = new GBizINFO();
+
+hojinid.onchange = hojinid.onkeyup = async () => {
+  const d = await gbiz.parseCorporateID(hojinid.value);
+  if (!d) {
+    divres.textContent = "有効な法人番号ではありません";
+  } else {
+    divres.innerHTML = d.tokijo + "<br>" + d.tokitype + "<br>" + d.tokiserial;
+  }
+};
+</script>
+</body>
+</html>
