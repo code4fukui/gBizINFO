@@ -1,4 +1,6 @@
 import { SPARQL } from "./SPARQL.js";
+import { isValid } from "./CheckDigit.js";
+import { CSV } from "https://js.sabae.cc/CSV.js";
 
 const baseurl = "https://api.info.gbiz.go.jp/sparql";
 class GBizINFO extends SPARQL {
@@ -312,11 +314,30 @@ class GBizINFO extends SPARQL {
         }
         LIMIT 100
       `));
-      
+      // 0.288 total
      /*
          GROUP BY ?corporateID ?corporateName
           ORDER BY ?corporateID LIMIT 1000
      */
+  }
+  filterByCorporateID(a, b) {
+    return parseInt(a.corporateID.substring(1)) - parseInt(b.corporateID.substring(1));
+  }
+  async getInfoByCorporateID(id) {
+    id = id.toString();
+    if (!isValid(id)) {
+      return null;
+    }
+    const g = globalThis;
+    g.tokijo = g.tokijo || CSV.toJSON(await CSV.fetch("./tokijo.csv"));
+    g.tokitype = g.tokitype || CSV.toJSON(await CSV.fetch("./tokitype.csv"));
+    const tokijo = id.substring(1, 1 + 4);
+    const tokitype = id.substring(1 + 4, 1 + 4 + 2);
+    return {
+      tokijo: g.tokijo.find(n => n.name == tokijo)?.label || tokijo,
+      tokitype: g.tokitype.find(n => n.name == tokitype)?.label || tokitype,
+      tokiserial: parseInt(id.substring(1 + 4 + 2))
+    };
   }
 }
 

@@ -1,4 +1,5 @@
 import { GBizINFO } from "./GBizINFO.js";
+import { CSV } from "https://js.sabae.cc/CSV.js";
 
 const gbiz = new GBizINFO();
 
@@ -19,14 +20,23 @@ const gbiz = new GBizINFO();
 //const data = await gbiz.getBasicByLocation("福井県鯖江市新横江２丁目３番４号");
 //const data = await gbiz.getBasicByCityID(18207);
 //const data = await gbiz.getBasicByKind(201);
+//const data = await gbiz.getBasicByKind(401); // 外国企業 9593社 2021-09-16
 //const data = await gbiz.getDetail(3210001017663); // 創業
 //const data = await gbiz.getDetail(4210001002945); // 廃業、ステータスみないと廃業しているかもしれない
 //const data = await gbiz.getDetail(1010001088074);
 //const data = await gbiz.getHojinName('経済産業省');
-const data = await gbiz.getHojinName('デジタル');
-// 7.368 total
+// Elasticsearch 1.485
+//const data = await gbiz.getHojinName('デジタル');
+// 7.368 total, 
 
+//const data = await gbiz.getInfoByCorporateID(3210001017663);
+
+const data = await gbiz.getInfoByCorporateID(2700150104536);
+
+//data.forEach((d) => d.cityID = d.cityID ? d.cityID.substring(d.cityID.length - 5) : "");
+//data.sort(gbiz.filterByCorporateID);
 console.log(JSON.stringify(data, null, 2), data?.length);
+//await Deno.writeTextFile("data/foreigns.csv", CSV.stringify(data));
 //console.log(JSON.stringify(data, null, 2));
 
 /*

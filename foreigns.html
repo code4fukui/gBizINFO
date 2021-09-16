@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>日本で登記されている外国の企業一覧</title>
+<style>
+  body {
+    background-color: #f8f8f8;
+    color: #333;
+  }
+  table {
+    border-collapse: collapse;
+    background-color: white;
+  }
+  h1 {
+    font-size: min(7.8vw, 30px);
+  }
+  td, th {
+    border: 1px solid gray;
+    word-break: break-all;
+    font-size: 80%;
+  }
+  td:first-child {
+    text-align: right;
+    word-break: normal;
+  }
+  th:nth-child(5) {
+    text-align: right;
+    word-break: normal;
+  }
+  input {
+    font-size: 20px;
+    margin-bottom: 1em;
+  }
+  </style>
+</head><body>
+
+<h1>日本で登記されている外国の企業一覧</h1>
+
+<script type="module" src="https://code4sabae.github.io/js/csv-viewer.js"></script>
+<csv-viewer src="./data/foreigns.csv"></csv-viewer>
+<hr>
+DATA: CC BY <a href=https://info.gbiz.go.jp/>gBizINFO （METI）経済産業省</a><br>
+App: CC BY <a href=https://fukuno.jig.jp/3340>福野泰介</a><br>
+<a href=https://github.com/code4fukui/gBizINFO/>src on GitHub</a>
+</body></html>
