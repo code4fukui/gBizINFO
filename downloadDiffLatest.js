@@ -5,6 +5,7 @@ import { unzip } from "https://taisukef.github.io/zlib.js/es/unzip.js";
 //import { scrapeDiff } from "./scrapeDiff.js";
 import { makeCreated } from "./makeCreated.js";
 import { Day } from "https://js.sabae.cc/DateTime.js";
+import { makeDiffSummary } from "./makeDiffSummary.js";
 
 //await scrapeDiff();
 
@@ -35,6 +36,7 @@ try {
     console.log(ndate);
     date = new Day(ndate).toString();
     await makeCreated(ndate);
+    await makeDiffSummary();
     break;
   }
   list.push({ date, fileNo: nextid, token });
