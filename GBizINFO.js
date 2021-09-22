@@ -12,8 +12,26 @@ class GBizINFO extends SPARQL {
       ?s
         <http://imi.go.jp/ns/core/rdf#都道府県> '${prefname}';
         <http://imi.go.jp/ns/core/rdf#市区町村> '${cityname}';
-        <http://imi.go.jp/ns/core/rdf#市区町村コード>/<http://imi.go.jp/ns/core/rdf#識別値> ?o
+        <http://imi.go.jp/ns/core/rdf#市区町村コード>/<http://imi.go.jp/ns/core/rdf#識別値> ?o.
       } limit 1`))?.o.value;
+  }
+  async getCityIDs(prefname, cityname) {
+    if (cityname) {
+      return this.cutType(await this.sparqlItems(`select distinct ?cityname ?code {
+        ?s
+          <http://imi.go.jp/ns/core/rdf#都道府県> '${prefname}';
+          <http://imi.go.jp/ns/core/rdf#市区町村> ?cityname;
+          <http://imi.go.jp/ns/core/rdf#市区町村コード>/<http://imi.go.jp/ns/core/rdf#識別値> ?code.
+          FILTER(contains(?cityname, '${cityname}'))
+        }`));
+    } else {
+      return this.cutType(await this.sparqlItems(`select distinct ?cityname ?code {
+        ?s
+          <http://imi.go.jp/ns/core/rdf#都道府県> '${prefname}';
+          <http://imi.go.jp/ns/core/rdf#市区町村> ?cityname;
+          <http://imi.go.jp/ns/core/rdf#市区町村コード>/<http://imi.go.jp/ns/core/rdf#識別値> ?code.
+        }`));
+    }
   }
   async getBasic(corporateID) {
     return this.cutType(
@@ -139,7 +157,7 @@ class GBizINFO extends SPARQL {
             _:keyAddress ic:表記 ?location .
         }
         OPTIONAL { ?key hj:更新日時/ic:標準型日時 ?moddate. }
-        ?key ic:組織種別 ?corporateType.
+        optional { ?key ic:組織種別 ?corporateType. }
         optional { ?key ic:設立日/ic:標準型日付 ?borndate. }
       } GROUP BY ?corporateID ?corporateType ?corporateName ?corporateKana ?location ?borndate ?moddate
     `));

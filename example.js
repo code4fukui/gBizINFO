@@ -16,6 +16,7 @@ const gbiz = new GBizINFO();
 //const data = await gbiz.getBasic(4000020182079);
 //const data = await gbiz.getCityID("大阪府", "堺市"); // 27140
 //const data = await gbiz.getCityID("福井県", "鯖江市"); // 18207
+const data = await gbiz.getCityIDs("大阪府", "堺市"); // 
 //const data = await gbiz.getBasicByLocation("福井県鯖江市西山町１３－１");
 //const data = await gbiz.getBasicByLocation("福井県鯖江市新横江２丁目３番４号");
 //const data = await gbiz.getBasicByCityID(18207);
@@ -31,7 +32,7 @@ const gbiz = new GBizINFO();
 
 //const data = await gbiz.getInfoByCorporateID(3210001017663);
 
-const data = await gbiz.getInfoByCorporateID(2700150104536);
+//const data = await gbiz.getDetail(2700150104536);
 
 //data.forEach((d) => d.cityID = d.cityID ? d.cityID.substring(d.cityID.length - 5) : "");
 //data.sort(gbiz.filterByCorporateID);
