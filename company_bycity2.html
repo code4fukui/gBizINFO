@@ -1,0 +1,18 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<style>
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: 1px solid gray;
+}
+</style>
+<body>
+<!--<script type="module" src="https://code4sabae.github.io/js/csv-viewer.js"></script>
+<csv-viewer src="./data/27140/company.csv"></csv-viewer>-->
+<script src="./csv-viewer-bundle.js"></script>
+<script>
+const cv = new CSVViewer();
+cv.src = "./data/27140/company.csv";
+document.body.appendChild(cv);
+</script>
