@@ -1,8 +1,20 @@
 import { CSV } from "https://js.sabae.cc/CSV.js";
 import { ArrayUtil } from "https://js.sabae.cc/ArrayUtil.js";
 
-const fn = "./data/18207/company.csv";
+//const fn = "./data/18207/company.csv";
+const fn = "./data/27140/company.csv"; // 堺市
 const data = CSV.toJSON(await CSV.fetch(fn));
+
+{
+  const data2 = data.filter(d => {
+    const n = parseInt(d.corporateType.substring(d.corporateType.length - 3));
+    return n >= 301 && n <= 305;
+  });
+  console.log(data2.length, data.length);
+  await Deno.writeTextFile("./data/27140/company30x.csv", CSV.stringify(data2));
+  Deno.exit(0);
+}
+
 data.sort((a, b) => a.corporateID.localeCompare(b.corporateID));
 //await Deno.writeTextFile(fn, CSV.stringify(data));
 
