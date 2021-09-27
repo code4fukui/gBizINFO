@@ -36,11 +36,11 @@ try {
     console.log(ndate);
     date = new Day(ndate).toString();
     await makeCreated(ndate);
-    await makeDiffSummary();
     break;
   }
   list.push({ date, fileNo: nextid, token });
   await Deno.writeTextFile("data/diff.csv", CSV.stringify(list));
+  await makeDiffSummary();
 } catch (e) {
   if (e.toString().indexOf("End of Central Directory Record not found") == -1) {
     console.log(e);

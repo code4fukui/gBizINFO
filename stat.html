@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<body>
+<h1>創廃業統計（都道府県、月別）</h1>
+
+<div id=tbls></div>
+<div class="credit">
+Related: <a href=./company_dashboard.html>創廃業ダッシュボード</a>, <a href=./company_diff.html>日本の法人数推移(2021/7/14基準)</a><br>
+APP: CC BY <a href=https://fukuno.jig.jp/3335>@taisukef 福野泰介</a><br>
+DATA: <a href="https://www.houjin-bangou.nta.go.jp/">国税庁法人番号公表サイト</a> → (CSV化 by <a href="https://github.com/code4fukui/gBizINFO/">gBizINFO on GitHub</a>)<br>
+</div>
+
+  
+<script type="module">
+import { CSV } from "https://js.sabae.cc/CSV.js";
+import { Day } from "https://js.sabae.cc/DateTime.js";
+import { ArrayUtil } from "https://js.sabae.cc/ArrayUtil.js";
+import { fix0 } from "https://js.sabae.cc/fix0.js";
+import { Num } from "https://js.sabae.cc/Num.js";
+
+class Stat {
+  async init() {
+    this.data = CSV.toJSON(await CSV.fetch("data/diff_summary.csv"));
+    return this;
+  }
+  //date,ndiff,ncreated,nterminated,c01,c02,c03,c04,c05,c06,c07,c08,c09,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23,c24,c25,c26,c27,c28,c29,c30,c31,c32,c33,c34,c35,c36,c37,c38,c39,c40,c41,c42,c43,c44,c45,c46,c47,t01,t02,t03,t04,t05,t06,t07,t08,t09,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19,t20,t21,t22,t23,t24,t25,t26,t27,t28,t29,t30,t31,t32,t33,t34,t35,t36,t37,t38,t39,t40,t41,t42,t43,t44,t45,t46,t47
+  _listYearMonth() {
+    return ArrayUtil.toUnique(this.data.map(d => d.date.substring(0, 7))); //.map(ym => [parseInt(ym.substring(0, 4)), parseInt(ym.substring(5))]);
+  }
+  getDataByMonth() {
+    const ym = this._listYearMonth();
+    const res = [];
+    for (const aym of ym) {
+      const fdata = this.data.filter(d => d.date.startsWith(aym));
+      let sumc = 0;
+      let sumt = 0;
+      for (let i = 1; i <= 47; i++) {
+        const pref = fix0(i, 2);
+        const nc = fdata.reduce((pre, n) => pre + parseInt(n["c" + pref]), 0);
+        const nt = fdata.reduce((pre, n) => pre + parseInt(n["t" + pref]), 0);
+        res.push({ ym: aym, pref, nc, nt });
+        sumc += nc;
+        sumt += nt;
+      }
+      res.push({ ym: aym, pref: "00", nc: sumc, nt: sumt });
+    }
+    res.forEach(d => {
+      d.d = (d.nc > d.nt ? "+" : "") + Num.addComma(d.nc - d.nt);
+      d.nc = Num.addComma(d.nc);
+      d.nt = Num.addComma(d.nt);
+    });
+    return res;
+  }
+  firstDay() {
+    return this.data[0].date;
+  }
+  lastDay() {
+    return this.data[this.data.length - 1].date;
+  }
+}
+
+import { JAPAN_PREF } from "https://js.sabae.cc/JAPAN_PREF.js";
+
+const main = async () => {
+  const stat = await new Stat().init();
+  const data = stat.getDataByMonth();
+  console.log(data);
+
+  const p = tbls;
+  for (let i = 0; i <= 47; i++) {
+    const pref = fix0(i, 2);
+    const data2 = data.filter(d => d.pref == pref);/*.map(d => {
+      const d2 = {};
+      Object.assign(d2, d);
+      return d2;
+    });*/
+    data2.forEach(d => delete d.pref);
+    //console.log(data2);
+    const csv = CSV.fromJSON(data2);
+    console.log(csv);
+    const prefname = i ? JAPAN_PREF[i - 1] : "全国";
+    const h2 = document.createElement("h2");
+    const a = document.createElement("a");
+    a.id = prefname;
+    a.textContent = prefname;
+    h2.appendChild(a);
+    p.appendChild(h2);
+    csv[0] = ["年月", "創業数", "廃業数", "創業-廃業"];
+    const tbl = CSV.makeTable(csv);
+    p.appendChild(tbl);
+    const div = document.createElement("div");
+    div.className = "span";
+    div.textContent = "※" + stat.firstDay() + " 〜 " + stat.lastDay();
+    p.appendChild(div);
+  }
+
+};
+main();
+</script>
+
+<link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+<style>
+.credit {
+  margin-top: 2em;
+}
+th, td, .span {
+  text-align: right;
+}
+</style>
+
+</body>
+</html>

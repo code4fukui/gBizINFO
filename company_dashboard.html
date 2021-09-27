@@ -211,7 +211,7 @@ body {
 	padding: 0;
 }
 h1 {
-	margin: 0 0 .5em;
+	margin: 0;
 	font-size: 5vw;
 	padding: 2vw 0;
 	background-color: #fd3a3a; /* #718ab2; */
@@ -281,11 +281,29 @@ select {
 a {
 	color: #666 !important;
 }
+.links {
+	margin: 0;
+	margin-bottom: 1em;
+	x-background-color: #fd3a3a;
+	background-color: #ff6969;
+}
+.links a {
+	display: inline-block;
+	padding: .3em;
+	margin: 0.1 1em;
+	color: white !important;
+	text-decoration: none;
+}
 </style>
 </head>
 <body>
 
 <h1>創廃業ダッシュボード <span id=tmtitle></span></h1>
+
+<div class="links">
+	<a href=./stat.html>創廃業統計（都道府県、月別）</a>
+	<a href=./company_diff.html>日本の法人数推移(2021/7/14基準)</a>
+</diV>
 
 <select id=sel></select>
 
@@ -294,8 +312,8 @@ a {
 <!--<div id=lastUpdate></div>-->
 <div id="detail"></div>
 
+
 <div class="credit">
-Related: <a href=./company_diff.html>日本の法人数推移(2021/7/14基準)</a><br>
 APP: CC BY <a href=https://fukuno.jig.jp/3335>@taisukef 福野泰介</a><br>
 DATA: <a href="https://www.houjin-bangou.nta.go.jp/">国税庁法人番号公表サイト</a> → (CSV化ツール by <a href="https://github.com/code4fukui/gBizINFO/">gBizINFO</a>)<br>
 LAYOUT: <a href=https://www.stopcovid19.jp/tabularmapsjapan.csv>TabularMaps Japan - 日本カラム地図 CSV</a> CC0 <a href=https://github.com/tabularmaps/hq>カラム地図 / TabularMaps on Github</a><br>

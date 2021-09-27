@@ -1,6 +1,8 @@
 import { CSV } from "https://js.sabae.cc/CSV.js";
 import { Day } from "https://js.sabae.cc/DateTime.js";
 import { GBizINFO } from "./GBizINFO.js";
+import { ArrayUtil } from "https://js.sabae.cc/ArrayUtil.js";
+import { fix0 } from "https://js.sabae.cc/fix0.js";
 
 const makeDiffSummary = async () => {
   const gbiz = new GBizINFO();
@@ -25,7 +27,17 @@ const makeDiffSummary = async () => {
     const data = CSV.toJSON(datax);
     
     const d = { date: l.date, ndiff: data.length, ncreated: datac.length, nterminated: datat.length };
-    console.log(d);
+    //const pref = ArrayUtil.toUnique(datac.map(d => d.prefectureCode)); // 01-47
+    //console.log(pref);
+    for (let i = 1; i <= 47; i++) {
+      const pcode = fix0(i, 2);
+      d["c" + pcode] = datac.filter(d => d.prefectureCode == pcode).length;
+    }
+    for (let i = 1; i <= 47; i++) {
+      const pcode = fix0(i, 2);
+      d["t" + pcode] = datat.filter(d => d.prefectureCode == pcode).length;
+    }
+    //console.log(d);
     res.push(d);
     
     for (const dd of data) {
@@ -37,7 +49,7 @@ const makeDiffSummary = async () => {
       }
     }
   }
-  console.log(Object.keys(chk));
+  //console.log(Object.keys(chk));
   await Deno.writeTextFile("data/diff_summary.csv", CSV.stringify(res));
 };
 
