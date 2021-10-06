@@ -156,18 +156,51 @@ class GBizINFO extends SPARQL {
             _:keyAddress ic:種別 '住所' . 
             _:keyAddress ic:表記 ?location .
         }
+        ?key hj:区分 _:keyStatus. 
+          _:keyStatus ic:種別 '処理区分'. 
+          _:keyStatus ic:表記 ?classSType.
         OPTIONAL { ?key hj:更新日時/ic:標準型日時 ?moddate. }
         optional { ?key ic:組織種別 ?corporateType. }
         optional { ?key ic:設立日/ic:標準型日付 ?borndate. }
+        filter(?classSType != "21" && ?classSType != "81" && ?classSType != "99")
       } GROUP BY ?corporateID ?corporateType ?corporateName ?corporateKana ?location ?borndate ?moddate
     `));
     /*
-        OPTIONAL { ?key hj:区分 _:keyStatus. 
-          _:keyStatus ic:種別 '処理区分'. 
-          _:keyStatus ic:表記 ?classSInfo.
+        OPTIONAL {
         }
       ?classSInfo
       */
+  }
+  async getBasicByCityID2(cityID) {
+    return this.cutType(await this.sparqlItems(`
+    PREFIX  hj: <http://hojin-info.go.jp/ns/domain/biz/1#>
+    PREFIX  ic: <http://imi.go.jp/ns/core/rdf#>
+    PREFIX  neptune-fts: <http://aws.amazon.com/neptune/vocab/v01/services/fts#>
+    
+    SELECT ?corporateID ?corporateName ?prefecture ?city ?classSType (COUNT(DISTINCT(?countTarget)) AS ?count)
+    { 
+    { GRAPH <http://hojin-info.go.jp/graph/hojin> {
+        ?s hj:法人基本情報 ?key1. 
+          ?key1 ic:ID/ic:識別値 ?corporateID. 
+          ?key1 ic:名称 _:corporatekeyName1. 
+          _:corporatekeyName1 ic:種別 '商号又は名称'. 
+          _:corporatekeyName1 ic:表記 ?corporateName. 
+          ?key1 ic:住所 _:keyAddress1. 
+          _:keyAddress1 ic:都道府県 ?prefecture. 
+          _:keyAddress1 ic:市区町村 ?city. 
+          ?key1 hj:区分 _:keyName.
+          _:keyName ic:種別 '処理区分'.
+          _:keyName ic:表記 ?classSType.
+          ?key1 ic:住所 _:keyAddress. 
+          _:keyAddress ic:市区町村コード <http://imi.go.jp/ns/code_id/code/jisx0402#${cityID}>. 
+     }} 
+     OPTIONAL{ VALUES ?tableName {<http://hojin-info.go.jp/graph/chotatsu> <http://hojin-info.go.jp/graph/hyosho> <http://hojin-info.go.jp/graph/todokede> <http://hojin-info.go.jp/graph/hojyokin> <http://hojin-info.go.jp/graph/tokkyo> <http://hojin-info.go.jp/graph/zaimu>} 
+     GRAPH ?tableName { 
+     { ?s hj:法人活動情報 ?countTarget.} 
+     } 
+     } 
+     } GROUP BY ?corporateID ?corporateName ?prefecture ?city ?classSType
+        `));
   }
   async getDetail(corporateID) {
     return this.cutType(
@@ -338,8 +371,12 @@ class GBizINFO extends SPARQL {
           ORDER BY ?corporateID LIMIT 1000
      */
   }
+  // todo sortByCorporateID
   filterByCorporateID(a, b) {
     return parseInt(a.corporateID.substring(1)) - parseInt(b.corporateID.substring(1));
+  }
+  filterByActive(a) { // 21 清算, 81 , 99 削除
+    return a.classSType != "21" && a.classSType != "81" && a.classType != "99";
   }
   async parseCorporateID(id) {
     id = id.toString();
