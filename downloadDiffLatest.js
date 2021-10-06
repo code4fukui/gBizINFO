@@ -2,12 +2,14 @@ import { CSV } from "https://js.sabae.cc/CSV.js";
 import { fetchBin } from "https://js.sabae.cc/fetchBin.js";
 import { unzip } from "https://taisukef.github.io/zlib.js/es/unzip.js";
 //import { existFile } from "https://js.sabae.cc/existFile.js";
-//import { scrapeDiff } from "./scrapeDiff.js";
+import { scrapeDiff } from "./scrapeDiff.js";
 import { makeCreated } from "./makeCreated.js";
 import { Day } from "https://js.sabae.cc/DateTime.js";
 import { makeDiffSummary } from "./makeDiffSummary.js";
 
-//await scrapeDiff();
+if (new Day().day == 1) { // 1日だけは特殊処理、、ページを取得する
+  await scrapeDiff();
+}
 
 const token = "f83622bb-6551-440a-95b4-1192ff13fb5a"; // いつまで有効?
 //const token = "f075ad01-bf30-444f-abbc-4b7cfc11be02";

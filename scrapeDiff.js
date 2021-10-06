@@ -15,6 +15,7 @@ export const scrapeDiff = async () => {
   const html = await (await fetch(url, { headers })).text();
   */
   const html = await (await fetch(url)).text();
+  await Deno.mkdir("temp", { recursive: true });
   //const html = await browser.fetchText(url, { sleepms: 3000 });
   await Deno.writeTextFile("temp/list.html", html);
   //const html = await Deno.readTextFile("list.html"); // for initial data
