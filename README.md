@@ -8,6 +8,12 @@
 - [日本の地方公共団体一覧](https://code4fukui.github.io/gBizINFO/localgovs.html)
 - [日本で登記されている外国の企業一覧](https://code4fukui.github.io/gBizINFO/foreigns.html)
 
+## 地域別サンプル
+
+- [鯖江市の法人一覧](https://code4fukui.github.io/gBizINFO/company_bycity_sabae.html)
+- [鯖江市の登録商標一覧](https://code4fukui.github.io/gBizINFO/company_trademark_sabae.html)
+- [鯖江市の特許一覧](https://code4fukui.github.io/gBizINFO/company_patent_sabae.html)
+
 ## データ更新方法
 
 基本 workflow による自動更新
