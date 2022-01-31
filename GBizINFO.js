@@ -203,11 +203,65 @@ class GBizINFO extends SPARQL {
         `));
   }
   async getDetail(corporateID) {
+    //const graph = "http://hojin-info.go.jp/graph/hyosho";
+    //const graph = "http://hojin-info.go.jp/graph/hojyokin";
+    //const graph = "http://hojin-info.go.jp/graph/todokede"; // 届け出
+    //const graph = "http://hojin-info.go.jp/graph/tokkyo";
+    const graph = "http://hojin-info.go.jp/graph/chotatsu";
     return this.cutType(
+      // ?industryCode
       await this.sparqlItem(`
-        PREFIX  hj: <http://hojin-info.go.jp/ns/domain/biz/1#>
-        PREFIX  ic: <http://imi.go.jp/ns/core/rdf#>
-        SELECT DISTINCT ?corporateID ?corporateName ?corporateKana ?location ?moddate ?systemName ?classSInfo ?classHInfo ?cityID ?borndate
+        PREFIX hj: <http://hojin-info.go.jp/ns/domain/biz/1#>
+        PREFIX ic: <http://imi.go.jp/ns/core/rdf#>
+        SELECT ?s ?corporateID ?corporateName ?corporateKana ?industryCode ?registtype ?registname ?tokkyocode ?tokkyoid ?location ?moddate ?systemName ?classSInfo ?classHInfo ?cityID ?borndate
+        FROM <${graph}> {
+          ?key ic:ID/ic:識別値 '${corporateID}'.
+          OPTIONAL{?key ic:名称 _:keyCorporateName . 
+            _:keyCorporateName ic:種別 '商号又は名称'. 
+            _:keyCorporateName ic:表記 ?corporateName .}
+          OPTIONAL{?key ic:名称 _:keyCorporateNameKana. 
+            _:keyCorporateNameKana ic:種別 '商号又は名称'. 
+            _:keyCorporateNameKana ic:カナ表記 ?corporateKana .}
+          OPTIONAL{
+            ?key ic:住所 _:keyAddress .
+            _:keyAddress ic:種別 '住所'.
+            _:keyAddress ic:表記 ?location.
+            _:keyAddress ic:市区町村コード ?cityID.
+          }
+          OPTIONAL{?key hj:更新日時/ic:標準型日時 ?moddate .} 
+          OPTIONAL{?key hj:システム名/ic:表記 ?systemName .} 
+          OPTIONAL{
+            ?key hj:区分 _:keyStatus. 
+            _:keyStatus ic:種別 '処理区分'. 
+            _:keyStatus ic:表記 ?classSInfo.
+          }
+          optional { ?key hj:業種コード ?industryCode. }
+          optional { ?key hj:活動名称/ic:表記 ?registtype. }
+          optional { ?key hj:対象 ?registname. }
+          optional { ?key ic:設立日/ic:標準型日付 ?borndate. }
+          optional { ?key hj:分類/ic:表記 ?tokkyocode. }
+          optional { ?key hj:認定番号/ic:識別値 ?tokkyoid. }
+        } limit 1
+    `),
+    // registtype 特許：発明の名称 意匠：意匠に係る物品 商標：商標
+    );
+//         GROUP BY ?corporateID ?corporateName ?corporateKana ?industryCode ?location ?moddate ?systemName ?classSInfo ?classHInfo ?cityID ?borndate
+    
+  }
+  async getDetail_(corporateID) {
+    const list = await this.getItem(`http://hojin-info.go.jp/data/${corporateID}`);
+    console.log(list.results);
+    Deno.exit(0);
+    //const data = await gbiz.getItem(`http://hojin-info.go.jp/data/ext/6120001005484_2021_301_商標_202108_00922404`);
+    return list;
+  }
+  async getDetail_bk(corporateID) {
+    return this.cutType(
+      // ?industryCode
+      await this.sparqlItem(`
+        PREFIX hj: <http://hojin-info.go.jp/ns/domain/biz/1#>
+        PREFIX ic: <http://imi.go.jp/ns/core/rdf#>
+        SELECT ?s ?corporateID ?corporateName ?corporateKana ?industryCode ?location ?moddate ?systemName ?classSInfo ?classHInfo ?cityID ?borndate
         FROM <http://hojin-info.go.jp/graph/hojin> { 
           ?s hj:法人基本情報 ?key. 
           ?key ic:ID/ic:識別値 '${corporateID}'. 
@@ -231,11 +285,14 @@ class GBizINFO extends SPARQL {
             ?key hj:区分 _:keyStatus. 
             _:keyStatus ic:種別 '処理区分'. 
             _:keyStatus ic:表記 ?classSInfo.
-          } 
+          }
+          optional { ?key hj:業種コード ?industryCode. }
           optional { ?key ic:設立日/ic:標準型日付 ?borndate. }
-        } GROUP BY ?corporateID ?corporateName ?corporateKana ?location ?moddate ?systemName ?classSInfo ?classHInfo ?cityID ?borndate
+        }
     `),
     );
+//         GROUP BY ?corporateID ?corporateName ?corporateKana ?industryCode ?location ?moddate ?systemName ?classSInfo ?classHInfo ?cityID ?borndate
+    
   }
   async getHojinName(name) {
     /*

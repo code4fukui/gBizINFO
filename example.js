@@ -14,9 +14,14 @@ const gbiz = new GBizINFO();
 //const data = await sparqlItem("http://hojin-info.go.jp/data/basic/7120105001131");
 
 //const data = await gbiz.getBasic(4000020182079);
+//const data = await gbiz.getBasic("1122001001212");
+//const data = await gbiz.getBasic("6120001005484"); // sharp
+const data = await gbiz.getDetail("6120001005484"); // sharp
+//const data = await gbiz.getDetail("1122001001212"); // ?
+//const data = await gbiz.getItem("http://hojin-info.go.jp/data/ext/1122001001212_2017_補助金情報_経済産業省_20180112_001459");
 //const data = await gbiz.getCityID("大阪府", "堺市"); // 27140
 //const data = await gbiz.getCityID("福井県", "鯖江市"); // 18207
-const data = await gbiz.getCityIDs("大阪府", "堺市"); // 
+//const data = await gbiz.getCityIDs("大阪府", "堺市"); // 
 //const data = await gbiz.getBasicByLocation("福井県鯖江市西山町１３－１");
 //const data = await gbiz.getBasicByLocation("福井県鯖江市新横江２丁目３番４号");
 //const data = await gbiz.getBasicByCityID(18207);
@@ -29,6 +34,16 @@ const data = await gbiz.getCityIDs("大阪府", "堺市"); //
 // Elasticsearch 1.485
 //const data = await gbiz.getHojinName('デジタル');
 // 7.368 total, 
+
+
+//const data = await gbiz.getItem(`http://hojin-info.go.jp/data/6120001005484`);
+//const data = await gbiz.getItem(`http://hojin-info.go.jp/data/ext/6120001005484_2021_301_商標_202108_00922404`);
+
+// 撮ることはできる
+/*
+http://hojin-info.go.jp/data/ext/6120001005484_2021_301_商標_202108_00922404
+*/
+
 
 //const data = await gbiz.getInfoByCorporateID(3210001017663);
 
