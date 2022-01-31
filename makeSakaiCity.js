@@ -19,4 +19,3 @@ for (const d of data) {
 console.log(res.length);
 await Deno.mkdir("data/" + basecode, { recursive: true });
 await Deno.writeTextFile("data/" + basecode + "/company.csv", CSV.stringify(res));
-
