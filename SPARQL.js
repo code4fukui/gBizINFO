@@ -9,6 +9,9 @@ class SPARQL {
   }
   async sparqlItem(query) {
     const json = await this.sparql(query);
+    if (!json.results) {
+      console.log("error", json);
+    }
     return json.results.bindings[0];
   }
   async sparqlItems(query) {
@@ -20,6 +23,9 @@ class SPARQL {
     return json.results.bindings.map((d) => d[name].value);
   }
   cutType(json) {
+    if (!json) {
+      return null;
+    }
     if (Array.isArray(json)) {
       return json.map((d) => this.cutType(d));
     } else {
