@@ -57,7 +57,7 @@ export const fetchInfoSummary = async (cid) => {
   };
   const limit10 = (array) => {
     const res = [];
-    for (let i = 0; i < Math.max(array.length, 10); i++) {
+    for (let i = 0; i < Math.min(array.length, 10); i++) {
       res.push(array[i]);
     }
     return  ZenkakuAlpha.toHan(res.join("、"));
