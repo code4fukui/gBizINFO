@@ -1,0 +1,151 @@
+{
+  "corporate_number": "3011101042092",
+  "postal_code": "9160042",
+  "location": "福井県鯖江市新横江２丁目３番４号",
+  "name": "株式会社ｊｉｇ．ｊｐ",
+  "kana": "じぐじぇーぴー",
+  "status": "-",
+  "update_date": "2018-04-12T00:00:00+09:00",
+  "certification": [],
+  "commendation": [],
+  "finance": {
+    "accounting_standards": null,
+    "fiscal_year_cover_page": null,
+    "major_shareholders": [],
+    "management_index": []
+  },
+  "patent": [
+    {
+      "patent_type": "商標",
+      "application_number": "2017151696",
+      "application_date": "2017-11-17",
+      "classifications": [
+        {
+          "コード値": "42",
+          "コード名": "類",
+          "日本語": "科学技術又は産業に関する調査研究及び設計並びに電子計算機又はソフトウェアの設計及び開発"
+        }
+      ],
+      "title": "ふわっち"
+    },
+    {
+      "patent_type": "商標",
+      "application_number": "2017151695",
+      "application_date": "2017-11-17",
+      "classifications": [
+        {
+          "コード値": "42",
+          "コード名": "類",
+          "日本語": "科学技術又は産業に関する調査研究及び設計並びに電子計算機又はソフトウェアの設計及び開発"
+        }
+      ],
+      "title": "オタマート"
+    },
+    {
+      "patent_type": "商標",
+      "application_number": "2017151696",
+      "application_date": "2017-11-17",
+      "classifications": [
+        {
+          "コード値": "09",
+          "コード名": "類",
+          "日本語": "科学用、航海用、測量用、写真用、音響用、映像用、計量用、信号用、検査用、救命用、教育用、計算用又は情報処理用の機械器具、光学式の機械器具及び電気の伝導用、電気回路の開閉用、変圧用、蓄電用、電圧調整用又は電気制御用の機械器具"
+        }
+      ],
+      "title": "ふわっち"
+    },
+    {
+      "patent_type": "商標",
+      "application_number": "2017151695",
+      "application_date": "2017-11-17",
+      "classifications": [
+        {
+          "コード値": "09",
+          "コード名": "類",
+          "日本語": "科学用、航海用、測量用、写真用、音響用、映像用、計量用、信号用、検査用、救命用、教育用、計算用又は情報処理用の機械器具、光学式の機械器具及び電気の伝導用、電気回路の開閉用、変圧用、蓄電用、電圧調整用又は電気制御用の機械器具"
+        }
+      ],
+      "title": "オタマート"
+    },
+    {
+      "patent_type": "商標",
+      "application_number": "2017151695",
+      "application_date": "2017-11-17",
+      "classifications": [
+        {
+          "コード値": "35",
+          "コード名": "類",
+          "日本語": "広告、事業の管理又は運営及び事務処理及び小売又は卸売の業務において行われる顧客に対する便益の提供"
+        }
+      ],
+      "title": "オタマート"
+    },
+    {
+      "patent_type": "商標",
+      "application_number": "2017151696",
+      "application_date": "2017-11-17",
+      "classifications": [
+        {
+          "コード値": "38",
+          "コード名": "類",
+          "日本語": "電気通信"
+        }
+      ],
+      "title": "ふわっち"
+    },
+    {
+      "patent_type": "商標",
+      "application_number": "2017151696",
+      "application_date": "2017-11-17",
+      "classifications": [
+        {
+          "コード値": "41",
+          "コード名": "類",
+          "日本語": "教育、訓練、娯楽、スポーツ及び文化活動"
+        }
+      ],
+      "title": "ふわっち"
+    },
+    {
+      "patent_type": "商標",
+      "application_number": "2014089014",
+      "application_date": "2014-10-09",
+      "classifications": [
+        {
+          "コード値": "41",
+          "コード名": "類",
+          "日本語": "教育、訓練、娯楽、スポーツ及び文化活動"
+        }
+      ],
+      "title": "ＩｃｈｉｇｏＪａｍ"
+    },
+    {
+      "patent_type": "商標",
+      "application_number": "2014089014",
+      "application_date": "2014-10-09",
+      "classifications": [
+        {
+          "コード値": "09",
+          "コード名": "類",
+          "日本語": "科学用、航海用、測量用、写真用、音響用、映像用、計量用、信号用、検査用、救命用、教育用、計算用又は情報処理用の機械器具、光学式の機械器具及び電気の伝導用、電気回路の開閉用、変圧用、蓄電用、電圧調整用又は電気制御用の機械器具"
+        }
+      ],
+      "title": "ＩｃｈｉｇｏＪａｍ"
+    },
+    {
+      "patent_type": "商標",
+      "application_number": "2014089014",
+      "application_date": "2014-10-09",
+      "classifications": [
+        {
+          "コード値": "42",
+          "コード名": "類",
+          "日本語": "科学技術又は産業に関する調査研究及び設計並びに電子計算機又はソフトウェアの設計及び開発"
+        }
+      ],
+      "title": "ＩｃｈｉｇｏＪａｍ"
+    }
+  ],
+  "procurement": [],
+  "subsidy": []
+}
