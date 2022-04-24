@@ -106,7 +106,7 @@ export const fetchInfoSummary = async (cid) => {
     summary("特許", patent),
     summary("意匠", design),
     summary("商標", trademark),
-  ].join(" ");
+  ].join(" ").trim();
   //console.log(pinfo);
   return { 特許情報: pinfo };
 };
