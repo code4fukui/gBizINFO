@@ -56,11 +56,12 @@ export const fetchInfoSummary = async (cid) => {
     }
   };
   const limit10 = (array) => {
+    const limit = 5;
     const res = [];
-    for (let i = 0; i < Math.min(array.length, 10); i++) {
+    for (let i = 0; i < Math.min(array.length, limit); i++) {
       res.push(array[i]);
     }
-    return  ZenkakuAlpha.toHan(res.join("、"));
+    return ZenkakuAlpha.toHan(res.join(" / ")) + (array.length >= limit ? " 他" : "");
   }
 
   const info = await fetchInfo(cid);
@@ -88,9 +89,24 @@ export const fetchInfoSummary = async (cid) => {
     }
     //console.log(d.application_date, d.title);
   }
+  /*
   return {
     特許: limit10(patent),
     意匠: limit10(design),
     商標: limit10(trademark),
   };
+  */
+  const summary = (name, array)  => {
+    if (array.length == 0) {
+      return "";
+    }
+    return `${name} ${array.length}件（${limit10(array)}）`;
+  };
+  const pinfo = [
+    summary("特許", patent),
+    summary("意匠", design),
+    summary("商標", trademark),
+  ].join(" ");
+  //console.log(pinfo);
+  return { 特許情報: pinfo };
 };
