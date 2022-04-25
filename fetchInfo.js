@@ -108,5 +108,16 @@ export const fetchInfoSummary = async (cid) => {
     summary("商標", trademark),
   ].join(" ").trim();
   //console.log(pinfo);
-  return { 特許情報: pinfo };
+  return {
+    法人番号: info.corporate_number,
+    住所: info.location,
+    法人名: info.name,
+    "法人名(カナ)": info.kana,
+    更新日時: info.update_date,
+    企業ホームページ: info.company_url,
+    事業概要: info.business_summary,
+    従業員数: info.employee_number,
+    代表者名: info.representative_name,
+    特許情報: pinfo,
+  };
 };

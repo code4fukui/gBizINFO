@@ -4,12 +4,12 @@ import { fetchInfo, fetchInfoSummary } from "./fetchInfo.js";
 
 const cidjig = "3011101042092";
 const cidsharp = "6120001005484"; // 特許情報 22644件
-//const cidnintendo = "1130001011420";
+const cidnintendo = "1130001011420";
 const cidkirishima = "8120001003239";
 //const cid = cidsharp;
 //const cid = cidjig;
-//const cid = cidnintendo;
-const cid = cidkirishima;
+const cid = cidnintendo;
+//const cid = cidkirishima;
 
 const info = await fetchInfoSummary(cid);
 console.log(info);
