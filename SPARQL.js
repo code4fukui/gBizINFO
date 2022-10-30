@@ -7,15 +7,21 @@ class SPARQL {
     const json = await (await fetch(url)).json();
     return json;
   }
+  err(json) {
+    throw new Error(JSON.stringify(json, 2, null));
+  }
   async sparqlItem(query) {
     const json = await this.sparql(query);
     if (!json.results) {
-      console.log("error", json);
+      throw this.err(json);
     }
     return json.results.bindings[0];
   }
   async sparqlItems(query) {
     const json = await this.sparql(query);
+    if (!json.results) {
+      throw this.err(json);
+    }
     return json.results.bindings;
   }
   values(json) {
