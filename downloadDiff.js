@@ -2,10 +2,10 @@ import { CSV } from "https://js.sabae.cc/CSV.js";
 import { fetchBin } from "https://js.sabae.cc/fetchBin.js";
 import { unzip } from "https://taisukef.github.io/zlib.js/es/unzip.js";
 import { existFile } from "https://js.sabae.cc/existFile.js";
-import { scrapeDiff } from "./scrapeDiff.js";
 import { makeCreated } from "./makeCreated.js";
-
-await scrapeDiff();
+//import { scrapeDiff } from "./scrapeDiff.js";
+//await scrapeDiff();
+import "./scrapeDiff2.js";
 
 const list = CSV.toJSON(await CSV.fetch("data/diff.csv"));
 for (const d of list) {
