@@ -1,3 +1,4 @@
 apitoken.txt
 fetchInfo.sh
 setenv.sh
+.env

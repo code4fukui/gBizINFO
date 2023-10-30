@@ -1,7 +1,8 @@
 import { ZenkakuAlpha } from "https://code4fukui.github.io/mojikiban/ZenkakuAlpha.js";
+import { getEnv } from "https://js.sabae.cc/getEnv.js";
 
 const api = async (path, req) => {
-  const token = Deno.env.get("GBIZ_ACCESS_TOKEN");
+  const token = await getEnv("GBIZ_ACCESS_TOKEN");
   const opt = {
     method: req ? "POST" : "GET",
     mode: "cors",
