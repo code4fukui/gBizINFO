@@ -67,6 +67,22 @@ class GBizINFO extends SPARQL {
     `),
     );
   }
+  async getAddress(corporateID) {
+    return this.cutType(
+      await this.sparqlItem(`
+      PREFIX  hj: <http://hojin-info.go.jp/ns/domain/biz/1#>
+      PREFIX  ic: <http://imi.go.jp/ns/core/rdf#>
+      SELECT ?location
+      FROM <http://hojin-info.go.jp/graph/hojin> { 
+          ?s hj:法人基本情報 ?key.
+          ?key ic:ID/ic:識別値 '${corporateID}'. 
+          ?key ic:住所 _:keyAddress. 
+          _:keyAddress ic:種別 '住所'.
+          _:keyAddress ic:表記 ?location.
+      }
+    `),
+    );
+  }
   async getBasicByKind(kindID) {
     return this.cutType(
       await this.sparqlItems(`
@@ -203,11 +219,13 @@ class GBizINFO extends SPARQL {
         `));
   }
   async getDetail(corporateID) {
+    //const graph = "http://hojin-info.go.jp/graph/shokuba"; // 職場情報
+    //const graph = "http://hojin-info.go.jp/graph/zaimu"; // 財務情報
     //const graph = "http://hojin-info.go.jp/graph/hyosho";
     //const graph = "http://hojin-info.go.jp/graph/hojyokin";
-    //const graph = "http://hojin-info.go.jp/graph/todokede"; // 届け出
+    const graph = "http://hojin-info.go.jp/graph/todokede"; // 届出認定情報
     //const graph = "http://hojin-info.go.jp/graph/tokkyo";
-    const graph = "http://hojin-info.go.jp/graph/chotatsu";
+    //const graph = "http://hojin-info.go.jp/graph/chotatsu";
     return this.cutType(
       // ?industryCode
       await this.sparqlItem(`
@@ -293,6 +311,32 @@ class GBizINFO extends SPARQL {
     );
 //         GROUP BY ?corporateID ?corporateName ?corporateKana ?industryCode ?location ?moddate ?systemName ?classSInfo ?classHInfo ?cityID ?borndate
     
+  }
+  async getBornDate(corporateID) {
+    const graphs = [
+      "http://hojin-info.go.jp/graph/todokede", // 届出認定情報・・・にしか設立日入っていない？
+      "http://hojin-info.go.jp/graph/shokuba", // 職場情報
+      "http://hojin-info.go.jp/graph/zaimu", // 財務情報
+      "http://hojin-info.go.jp/graph/hyosho",
+      "http://hojin-info.go.jp/graph/hojyokin",
+      "http://hojin-info.go.jp/graph/tokkyo",
+      "http://hojin-info.go.jp/graph/chotatsu",
+    ];
+    for (const graph of graphs) {
+      const res = this.cutType(await this.sparqlItem(`
+          PREFIX hj: <http://hojin-info.go.jp/ns/domain/biz/1#>
+          PREFIX ic: <http://imi.go.jp/ns/core/rdf#>
+          SELECT ?borndate
+          FROM <${graph}> {
+            ?key ic:ID/ic:識別値 '${corporateID}'.
+            ?key ic:設立日/ic:標準型日付 ?borndate.
+          } limit 1
+      `));
+      if (res) {
+        return res.borndate;
+      }
+    }
+    return null;
   }
   async getHojinName(name) {
     /*
