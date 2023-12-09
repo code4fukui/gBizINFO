@@ -1,4 +1,4 @@
-import { fetchInfo, fetchInfoSummary } from "./fetchInfo.js";
+import { fetchInfo, fetchInfoSummary, fetchInfoBasic } from "./fetchInfo.js";
 
 // 2020年までしか入ってない？
 
@@ -11,8 +11,15 @@ const cidkirishima = "8120001003239";
 const cid = cidnintendo;
 //const cid = cidkirishima;
 
-const info = await fetchInfoSummary(cid);
-console.log(info);
+const infob = await fetchInfoBasic(cid);
+console.log("info basic", infob);
+Deno.exit(0);
+
+const info = await fetchInfo(cid);
+console.log("info", info);
+
+const infos = await fetchInfoSummary(cid);
+console.log("info summary", infos);
 Deno.exit(0);
 
 

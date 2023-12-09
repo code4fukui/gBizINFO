@@ -21,6 +21,17 @@ const api = async (path, req) => {
   return res;
 };
 
+export const fetchInfoBasic = async (cid, outpath) => {
+  const fn = outpath + cid + ".json";
+  //const data = await api("hojin/" + cid);
+  //console.log(data);
+  //const list = ["", "certification", "commendation", "finance", "patent", "procurement", "subsidy", "workplace"];
+  const data = await api("hojin/" + cid);
+  console.log(data);
+  const res = data["hojin-infos"][0];
+  return res;
+};
+
 export const fetchInfo = async (cid, outpath) => {
   const fn = outpath + cid + ".json";
   try {
