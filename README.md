@@ -1,27 +1,33 @@
 # gBizINFO
 
-- [創廃業ダッシュボード](https://code4fukui.github.io/gBizINFO/company_dashboard.html)
-- [日本の法人数推移](https://code4fukui.github.io/gBizINFO/company_diff.html)
-- [創業ダッシュボード](https://code4fukui.github.io/gBizINFO/company_created.html)
-- [廃業ダッシュボード](https://code4fukui.github.io/gBizINFO/company_terminated.html)
-- [日本の国の機関一覧](https://code4fukui.github.io/gBizINFO/jpgovs.html)
-- [日本の地方公共団体一覧](https://code4fukui.github.io/gBizINFO/localgovs.html)
-- [日本で登記されている外国の企業一覧](https://code4fukui.github.io/gBizINFO/foreigns.html)
+gBizINFO is a project that provides visualizations and datasets related to business information in Japan.
 
-## 地域別サンプル
+## Features
 
-- [鯖江市の法人一覧](https://code4fukui.github.io/gBizINFO/company_bycity_sabae.html)
-- [鯖江市の登録商標一覧](https://code4fukui.github.io/gBizINFO/company_trademark_sabae.html)
-- [鯖江市の特許一覧](https://code4fukui.github.io/gBizINFO/company_patent_sabae.html)
+- Company Dashboard: Visualizes the creation and termination of companies across Japan.
+- Company Diff: Displays the historical trend of the number of companies in Japan.
+- Company Created: Visualizes the creation of new companies.
+- Company Terminated: Visualizes the termination of companies.
+- Japanese Government Agencies: List of national government agencies in Japan.
+- Local Governments: List of local public organizations in Japan.
+- Foreign Companies: List of foreign companies registered in Japan.
 
-## データ更新方法
+## Datasets
 
-基本 workflow による自動更新
-```
-deno run -A downloadDiffLatest.js
-```
+The project provides CSV files containing the following datasets:
 
-月初、失敗したら下記を一度実行
-```
-deno run -A downloadDiff.js
-```
+- Company information by city
+- Company trademarks and patents by city
+- Creation and termination of companies by prefecture and month
+
+## Usage
+
+The datasets can be accessed and used by downloading the CSV files from the project's GitHub repository.
+
+## Data Sources
+
+The data used in this project is provided by the [gBizINFO](https://info.gbiz.go.jp/) service operated by the Ministry of Economy, Trade and Industry (METI) of Japan.
+
+## License
+
+The data and code in this project are available under open source licenses. Please refer to the individual licenses for each component.
