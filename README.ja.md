@@ -1,5 +1,9 @@
 # gBizINFO
 
+日本の企業情報に関するデータを視覚化および提供するプロジェクトです。
+
+## デモ
+
 - [創廃業ダッシュボード](https://code4fukui.github.io/gBizINFO/company_dashboard.html)
 - [日本の法人数推移](https://code4fukui.github.io/gBizINFO/company_diff.html)
 - [創業ダッシュボード](https://code4fukui.github.io/gBizINFO/company_created.html)
@@ -16,12 +20,9 @@
 
 ## データ更新方法
 
-基本 workflow による自動更新
-```
-deno run -A downloadDiffLatest.js
-```
+- 基本的に自動更新のワークフローによる更新
+- 月初のデータ取得が失敗した場合は、手動の更新スクリプトを使用
 
-月初、失敗したら下記を一度実行
-```
-deno run -A downloadDiff.js
-```
+## ライセンス
+
+本プロジェクトのデータおよびコードは、オープンソースライセンスの下で提供されています。各コンポーネントのライセンスをご確認ください。

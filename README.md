@@ -1,5 +1,7 @@
 # gBizINFO
 
+> 日本語のREADMEはこちらです: [README.ja.md](README.ja.md)
+
 gBizINFO is a project that provides visualizations and datasets related to business information in Japan.
 
 ## Features
