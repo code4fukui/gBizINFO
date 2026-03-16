@@ -22,14 +22,10 @@ The project provides CSV files containing the following datasets:
 - Company trademarks and patents by city
 - Creation and termination of companies by prefecture and month
 
-## Usage
-
-The datasets can be accessed and used by downloading the CSV files from the project's GitHub repository.
-
 ## Data Sources
 
 The data used in this project is provided by the [gBizINFO](https://info.gbiz.go.jp/) service operated by the Ministry of Economy, Trade and Industry (METI) of Japan.
 
 ## License
 
-The data and code in this project are available under open source licenses. Please refer to the individual licenses for each component.
+MIT License — see [LICENSE](LICENSE).
