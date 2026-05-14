@@ -2,3 +2,8 @@ apitoken.txt
 fetchInfo.sh
 setenv.sh
 .env
+
+# auto-added by meta-ops
+node_modules/
+.DS_Store
+Thumbs.db
